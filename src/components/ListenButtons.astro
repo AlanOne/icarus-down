@@ -1,10 +1,11 @@
 ---
 import { newTab } from '../lib/paths';
 import { listenLinks, type Release } from '../lib/releases';
+import { serviceIcon } from '../lib/service-icons';
 
 interface Props {
   release: Release;
-  /** Big pill buttons in the hero, quieter outlined ones in the music list. */
+  /** Big text buttons in the hero; round icon buttons in the music list. */
   size?: 'large' | 'small';
 }
 
@@ -15,13 +16,24 @@ const links = listenLinks(release);
 {
   links.length > 0 && (
     <ul class:list={['listen', size]} aria-label={`Listen to ${release.title}`}>
-      {links.map((l, i) => (
-        <li>
-          <a class:list={['btn', { 'btn-quiet': size === 'small' || i > 0 }]} href={l.url} {...newTab}>
-            {l.label}
-          </a>
-        </li>
-      ))}
+      {links.map((l, i) =>
+        size === 'large' ? (
+          <li>
+            <a class:list={['btn', { 'btn-quiet': i > 0 }]} href={l.url} {...newTab}>
+              {l.label}
+            </a>
+          </li>
+        ) : (
+          <li>
+            <a class="icon-btn" href={l.url} title={l.label} {...newTab}>
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                <path d={serviceIcon(l.label)} fill="currentColor" />
+              </svg>
+              <span class="sr-only">Listen to {release.title} on {l.label}</span>
+            </a>
+          </li>
+        ),
+      )}
     </ul>
   )
 }

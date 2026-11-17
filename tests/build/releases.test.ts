@@ -65,6 +65,25 @@ describe('releases', () => {
   });
 });
 
+describe('listen buttons in the music list', () => {
+  it('are icons, each named for screen readers and with a tooltip', () => {
+    // For whatever releases exist (none is fine: the empty-content build checks that).
+    const links = doc.querySelectorAll('#music .listen a');
+    for (const a of links) {
+      const card = a.closest('[data-release]')!;
+      const title = card.querySelector('h3')!.textContent!.trim();
+      expect(a.querySelector('svg'), a.outerHTML).not.toBeNull();
+      // Only the icon is visible; the name is in a visually hidden span.
+      const visible = [...a.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent!.trim()).join('');
+      expect(visible).toBe('');
+      const name = a.querySelector('.sr-only')?.textContent?.trim() ?? '';
+      const service = a.getAttribute('title') ?? '';
+      expect(service, a.outerHTML).not.toBe('');
+      expect(name).toBe(`Listen to ${title} on ${service}`);
+    }
+  });
+});
+
 describe('links and third parties', () => {
   it('renders no anchor with an empty href', () => {
     for (const a of doc.querySelectorAll('a')) {
