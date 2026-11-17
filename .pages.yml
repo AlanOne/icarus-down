@@ -1,0 +1,273 @@
+# Pages CMS configuration: https://pagescms.org/docs/configuration/
+# Field names must match the zod schemas in src/lib/site-schema.ts
+# (tests/unit/pages-cms.test.ts checks this).
+
+media:
+  - name: images
+    label: Images
+    input: src/assets/media
+    output: /src/assets/media
+    extensions: [jpg, jpeg, png, webp, avif]
+  - name: files
+    label: Files
+    input: public/files
+    output: /files
+    extensions: [pdf]
+
+content:
+  - name: shows
+    label: Shows
+    type: collection
+    path: src/content/shows
+    format: yaml-frontmatter
+    description: Past shows disappear from the site by themselves the day after.
+    fields:
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: venue
+        label: Venue
+        type: string
+        required: true
+      - name: city
+        label: City
+        type: string
+        required: true
+      - name: country
+        label: Country
+        type: string
+      - name: ticketUrl
+        label: Ticket link
+        type: string
+        description: Full link starting with https://
+      - name: note
+        label: Note
+        type: string
+        description: For example "support for X" or "free entry".
+
+  - name: releases
+    label: Releases
+    type: collection
+    path: src/content/releases
+    format: yaml-frontmatter
+    description: Add a release before it comes out to show "Out <date>" with a Pre-save button. On release day the site switches to the listen buttons by itself.
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: type
+        label: Type
+        type: select
+        required: true
+        options:
+          values:
+            - name: single
+              label: Single
+            - name: ep
+              label: EP
+            - name: album
+              label: Album
+      - name: date
+        label: Release date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: cover
+        label: Cover image
+        type: image
+        required: true
+        options:
+          media: images
+      - name: presaveUrl
+        label: Pre-save link
+        type: string
+        description: Optional. Shown before release day, and as "Listen" if no other links are set yet.
+      - name: links
+        label: Listen links
+        type: object
+        description: All optional. Leave empty the ones that don't exist yet.
+        fields:
+          - name: spotify
+            label: Spotify
+            type: string
+          - name: appleMusic
+            label: Apple Music
+            type: string
+          - name: bandcamp
+            label: Bandcamp
+            type: string
+          - name: youtubeMusic
+            label: YouTube Music
+            type: string
+          - name: other
+            label: Other
+            type: object
+            fields:
+              - name: label
+                label: Button text
+                type: string
+              - name: url
+                label: Link
+                type: string
+
+  - name: videos
+    label: Videos
+    type: collection
+    path: src/content/videos
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: url
+        label: YouTube link
+        type: string
+        required: true
+        description: Paste any YouTube link (youtu.be, watch, shorts or music.youtube.com).
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+  - name: members
+    label: Members
+    type: collection
+    path: src/content/members
+    format: yaml-frontmatter
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: role
+        label: Role or instrument
+        type: string
+        required: true
+      - name: photo
+        label: Photo
+        type: image
+        options:
+          media: images
+      - name: order
+        label: Order
+        type: number
+        required: true
+        description: Members are listed from the lowest number up.
+
+  - name: site
+    label: Band & press
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: band
+        label: Band
+        type: object
+        fields:
+          - name: name
+            label: Band name
+            type: string
+            required: true
+          - name: shortBio
+            label: Short bio (home page)
+            type: text
+          - name: longBio
+            label: Long bio (press page)
+            type: text
+          - name: heroPhoto
+            label: Main photo
+            type: image
+            required: true
+            options:
+              media: images
+      - name: press
+        label: Press kit
+        type: object
+        fields:
+          - name: photos
+            label: Press photos
+            type: object
+            list: true
+            description: Web-ready photos, about 3000 px on the long edge at most. Put full-resolution originals behind the link below.
+            fields:
+              - name: image
+                label: Photo
+                type: image
+                required: true
+                options:
+                  media: images
+              - name: caption
+                label: Caption
+                type: string
+                required: true
+              - name: credit
+                label: Photo credit
+                type: string
+          - name: fullResKitUrl
+            label: Full-resolution press kit link
+            type: string
+            description: Optional link to a Google Drive or Dropbox folder or zip.
+          - name: techRider
+            label: Tech rider / stage plot (PDF)
+            type: file
+            options:
+              media: files
+          - name: bookingEmail
+            label: Booking email
+            type: string
+            required: true
+          - name: bookingPhone
+            label: Booking phone
+            type: string
+            description: Optional. Old values stay visible in the public repo history.
+      - name: social
+        label: Social links
+        type: object
+        description: All optional. Full links starting with https://
+        fields:
+          - name: instagram
+            label: Instagram
+            type: string
+          - name: facebook
+            label: Facebook
+            type: string
+          - name: youtube
+            label: YouTube
+            type: string
+          - name: spotify
+            label: Spotify
+            type: string
+          - name: bandcamp
+            label: Bandcamp
+            type: string
+          - name: tiktok
+            label: TikTok
+            type: string
+          - name: other
+            label: Other
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Name
+                type: string
+                required: true
+              - name: url
+                label: Link
+                type: string
+                required: true
+      - name: shareImage
+        label: Link preview image
+        type: image
+        required: true
+        description: Shown when the site link is pasted into WhatsApp, email or social media. 1200 x 630 works best.
+        options:
+          media: images
