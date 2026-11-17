@@ -192,6 +192,14 @@ content:
             required: true
             options:
               media: images
+          - name: heroPhotos
+            label: Hero slideshow photos
+            type: image
+            description: Shown after the main photo, one every 10 seconds, in this order. Wide photos work best. Leave empty to use the press photos instead.
+            options:
+              media: images
+              multiple:
+                max: 30
       - name: press
         label: Press kit
         type: object

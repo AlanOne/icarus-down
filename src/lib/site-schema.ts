@@ -98,6 +98,11 @@ export const siteSchema = z.object({
     shortBio: z.preprocess(orEmptyText, z.string()),
     longBio: z.preprocess(orEmptyText, z.string()),
     heroPhoto: mediaPath,
+    /** More photos for the hero slideshow, after the main one. */
+    heroPhotos: z.preprocess(
+      (v) => (Array.isArray(v) ? v.filter((p) => typeof p === 'string' && p !== '') : []),
+      z.array(mediaPath),
+    ),
   }),
   press: z.object({
     photos: z.preprocess(

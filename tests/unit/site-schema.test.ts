@@ -144,3 +144,23 @@ describe('social links', () => {
   });
 });
 
+describe('hero slideshow photos', () => {
+  const base = {
+    band: { name: 'X', heroPhoto: '/a.jpg' },
+    press: { bookingEmail: 'booking@example.com' },
+    social: {},
+    shareImage: '/a.jpg',
+  };
+
+  it('reads a list of photos for the slideshow', () => {
+    const site = siteSchema.parse({ ...base, band: { ...base.band, heroPhotos: ['/b.jpg', '/c.jpg'] } });
+    expect(site.band.heroPhotos).toEqual(['/b.jpg', '/c.jpg']);
+  });
+
+  it('treats a missing or empty list as none, and drops blank entries', () => {
+    expect(siteSchema.parse(base).band.heroPhotos).toEqual([]);
+    expect(siteSchema.parse({ ...base, band: { ...base.band, heroPhotos: null } }).band.heroPhotos).toEqual([]);
+    expect(siteSchema.parse({ ...base, band: { ...base.band, heroPhotos: ['/b.jpg', ''] } }).band.heroPhotos).toEqual(['/b.jpg']);
+  });
+});
+

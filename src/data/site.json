@@ -3,7 +3,20 @@
     "name": "Icarus Down",
     "shortBio": "Icarus Down is an alternative rock band from Trbovlje, in Slovenia's Zasavje region. Formed in 2004 by musicians from five local bands, it moves between clean and heavily distorted, analog and digital, quiet atmosphere and sudden bursts of energy.",
     "longBio": "Icarus Down formed in Trbovlje in 2004, when members of five Zasavje bands (Request Denied, Aaron Knows, Overload, Lost In The Crowd and Sun Ate Mars) joined forces. The plan was serious work and uncompromising music, with no fixed genre and quality as the only limit. Guitarist Alan Jančič and drummer Jaka Tavš joined in 2006.\n\nThe band is hard to pin to one style. Alternative rock, post-rock, emo and hardcore all show up, with grunge somewhere in the background. Songs swing between clean and distorted, analog and digital, ambient passages and full-on bursts, in regular and irregular time.\n\nAfter two years of club gigs, festivals and band competitions, and a ten-song demo handed out at shows, the band released the Soundtrack Of A Weekend EP in 2006, along with a self-made animated video for \"Push Me... And I'll Let You\". The debut album, Contortions, Mood Swings And The Inevitable Decay Of Relationships, followed in December 2007 on the Ljubljana label CPZ Records. Built around the myth of Icarus, it took the band to clubs across Slovenia and to festivals at home and abroad.\n\nIn 2008 and 2009 Icarus Down gave away The Burning Water Project as a free double album: ANALOG, twelve acoustic reworkings of older songs, and DIGITAL, eleven electronic tracks. The Life Kit EP followed in 2013.",
-    "heroPhoto": "/src/assets/media/zagorje-2026-singer.jpg"
+    "heroPhoto": "/src/assets/media/zagorje-2026-singer.jpg",
+    "heroPhotos": [
+      "/src/assets/media/Zagorje 2026 Stage.JPG",
+      "/src/assets/media/hero-2006-mct-trbovlje-vocals.jpg",
+      "/src/assets/media/zagorje-2026-bass-and-drums.jpg",
+      "/src/assets/media/hero-2006-mct-trbovlje-keys-and-guitar.jpg",
+      "/src/assets/media/zagorje-2026-drums.jpg",
+      "/src/assets/media/hero-2006-mct-trbovlje-scream.jpg",
+      "/src/assets/media/zagorje-2026-singer-silhouette.jpg",
+      "/src/assets/media/hero-2008-mc-bit-crnomelj-bass.jpg",
+      "/src/assets/media/zagorje-2026-bass.jpg",
+      "/src/assets/media/hero-2006-mct-trbovlje-bass-and-guitar.jpg",
+      "/src/assets/media/hero-2008-mc-bit-crnomelj-drums.jpg"
+    ]
   },
   "press": {
     "photos": [
@@ -35,8 +48,8 @@
       }
     ],
     "fullResKitUrl": "",
-    "techRider": "/files/tech-rider.pdf",
-    "bookingEmail": "booking@example.com",
+    "techRider": "",
+    "bookingEmail": "icarusdown@gmail.com",
     "bookingPhone": ""
   },
   "social": {

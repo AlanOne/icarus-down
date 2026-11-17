@@ -25,7 +25,7 @@ const description =
     <Hero
       bandName={site.band.name}
       heroPhoto={site.band.heroPhoto}
-      morePhotos={site.press.photos.map((p) => p.image)}
+      morePhotos={site.band.heroPhotos.length > 0 ? site.band.heroPhotos : site.press.photos.map((p) => p.image)}
       releases={releases}
       today={today}
     />

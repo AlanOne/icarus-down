@@ -246,6 +246,12 @@ p {
   color: var(--color-accent);
 }
 
+/* Out of sight until reached with the keyboard; screen readers still find it. */
+.hero-pause:not(:focus-visible) {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .hero-pause .icon-play,
 .hero-pause[aria-pressed='true'] .icon-pause {
   display: none;
@@ -650,8 +656,11 @@ p {
 
 .video-dialog {
   width: min(100% - 2 * var(--gutter), 70rem);
+  max-width: none;
   max-height: 100%;
-  padding: 0;
+  /* Room for the focus ring around the Close button, which a phone would otherwise clip. */
+  padding: 8px;
+  overflow: visible;
   border: 0;
   background: transparent;
   color: var(--color-text);
@@ -663,7 +672,9 @@ p {
 
 .video-dialog-frame iframe {
   display: block;
-  width: 100%;
+  /* Full width, but never taller than the screen leaves room for (landscape phones). */
+  width: min(100%, (100dvh - 7rem) * 16 / 9);
+  margin: 0 auto;
   aspect-ratio: 16 / 9;
   border: 0;
   background: #000;

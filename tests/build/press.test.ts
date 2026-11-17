@@ -64,6 +64,8 @@ describe('press page', () => {
     const rider = [...doc.querySelectorAll('a')].find((a) => /tech rider/i.test(a.textContent ?? ''));
     if (blank(site.press?.techRider)) {
       expect(rider).toBeUndefined();
+      // Nor promised in the page description (search results, link previews).
+      expect(doc.querySelector('meta[name="description"]')?.getAttribute('content')).not.toMatch(/tech rider/i);
       return;
     }
     expect(rider?.getAttribute('href')).toBe(`/icarus-down${site.press.techRider}`);

@@ -103,7 +103,7 @@ describe('.pages.yml', () => {
   it('uses the images library for every image field and files for the tech rider', () => {
     const fields = config.content.flatMap((e) => allFields(e.fields));
     const images = fields.filter((f) => f.type === 'image');
-    expect(images.map((f) => f.name).sort()).toEqual(['cover', 'heroPhoto', 'image', 'photo', 'shareImage']);
+    expect(images.map((f) => f.name).sort()).toEqual(['cover', 'heroPhoto', 'heroPhotos', 'image', 'photo', 'shareImage']);
     for (const f of images) expect(f.options?.media).toBe('images');
     const rider = fields.find((f) => f.name === 'techRider')!;
     expect(rider).toMatchObject({ type: 'file', options: { media: 'files' } });
