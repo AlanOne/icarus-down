@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import type { Member } from '../lib/content';
+import { resolveMedia } from '../lib/media';
+import { url } from '../lib/paths';
+import type { Site } from '../lib/site-schema';
+
+interface Props {
+  site: Site;
+  members: Member[];
+}
+
+const { site, members } = Astro.props;
+const { press, band } = site;
+const bio = band.longBio
+  .split(/\n\s*\n/)
+  .map((p) => p.trim())
+  .filter(Boolean);
+
+const photos = press.photos.flatMap((p) => {
+  const image = resolveMedia(p.image);
+  if (!image) {
+    console.warn(`[press] Skipping photo "${p.caption}": ${p.image} not found`);
+    return [];
+  }
+  const ext = image.format === 'jpeg' ? 'jpg' : image.format;
+  const filename = `${band.name} - ${p.caption}.${ext}`.replace(/[\\/:*?"<>|]/g, '');
+  return [{ ...p, image, filename }];
+});
+---
+
+<section class="section" aria-labelledby="bio-title">
+  <h2 id="bio-title">Bio</h2>
+  <div class="bio">{bio.map((p) => <p>{p}</p>)}</div>
+  {
+    members.length > 0 && (
+      <ul class="lineup">
+        {members.map((m) => (
+          <li>
+            <span class="member-name">{m.name}</span> <span class="member-role">{m.role}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
+
+{
+  (photos.length > 0 || press.fullResKitUrl) && (
+    <section class="section" aria-labelledby="photos-title">
+      <h2 id="photos-title">Press photos</h2>
+      {photos.length > 0 && (
+        <ul class="press-photos">
+          {photos.map((p) => (
+            <li>
+              <Image src={p.image} widths={[400, 800]} sizes="(min-width: 48rem) 33vw, 100vw" alt={p.caption} />
+              <p class="caption">{p.caption}</p>
+              {p.credit && <p class="credit">Photo: {p.credit}</p>}
+              <a href={p.image.src} download={p.filename} class="download">
+                Download<span class="sr-only"> {p.caption}</span> ({p.image.width} × {p.image.height})
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+      {press.fullResKitUrl && (
+        <p class="full-res">
+          <a class="btn btn-quiet" href={press.fullResKitUrl}>
+            Full-resolution press kit
+          </a>
+        </p>
+      )}
+    </section>
+  )
+}
+
+<section class="section" aria-labelledby="booking-title">
+  <h2 id="booking-title">Booking</h2>
+  <dl class="booking-details">
+    <dt>Email</dt>
+    <dd><a href={`mailto:${press.bookingEmail}`}>{press.bookingEmail}</a></dd>
+    {
+      press.bookingPhone && (
+        <>
+          <dt>Phone</dt>
+          <dd>
+            <a href={`tel:${press.bookingPhone.replace(/[^\d+]/g, '')}`}>{press.bookingPhone}</a>
+          </dd>
+        </>
+      )
+    }
+    {
+      press.techRider && (
+        <>
+          <dt>Stage</dt>
+          <dd>
+            <a href={url(press.techRider)}>Tech rider and stage plot (PDF)</a>
+          </dd>
+        </>
+      )
+    }
+  </dl>
+</section>

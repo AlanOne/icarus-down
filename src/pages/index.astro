@@ -7,37 +7,9 @@ import Music from '../components/Music.astro';
 import Shows from '../components/Shows.astro';
 import Videos from '../components/Videos.astro';
 import Base from '../layouts/Base.astro';
-import { loadMembers, loadReleases, loadShows, loadVideos } from '../lib/content';
-import { todayIn } from '../lib/dates';
-import { sectionsToRender } from '../lib/sections';
-import { upcomingShows } from '../lib/shows';
-import { loadSite } from '../lib/site-schema';
-import { youtubeId } from '../lib/youtube';
+import { loadPageData } from '../lib/page-data';
 
-const site = loadSite();
-const today = todayIn(new Date());
-
-const shows = upcomingShows(await loadShows(), today);
-const releases = await loadReleases();
-const members = await loadMembers();
-
-// A video whose link isn't a YouTube link is left out rather than shown broken.
-const videos = (await loadVideos()).flatMap((v) => {
-  const id = youtubeId(v.url);
-  if (!id) {
-    console.warn(`[videos] Skipping "${v.title}": not a YouTube link (${v.url})`);
-    return [];
-  }
-  return [{ ...v, youtubeId: id }];
-});
-
-const sections = sectionsToRender({
-  releases: releases.length,
-  videos: videos.length,
-  upcomingShows: shows.length,
-  members: members.length,
-  shortBio: site.band.shortBio,
-});
+const { site, today, shows, releases, members, videos, sections } = await loadPageData();
 ---
 
 <Base

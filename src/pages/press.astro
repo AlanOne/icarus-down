@@ -1,0 +1,24 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import PressKit from '../components/PressKit.astro';
+import Base from '../layouts/Base.astro';
+import { loadPageData } from '../lib/page-data';
+
+const { site, members, sections } = await loadPageData();
+---
+
+<Base
+  title={`Press & Booking: ${site.band.name}`}
+  description={`Bio, press photos, tech rider and booking contact for ${site.band.name}.`}
+  path="press/"
+>
+  <Header sections={sections} bandName={site.band.name} current="press" />
+  <main id="main" class="press">
+    <div class="press-head">
+      <h1>Press &amp; Booking</h1>
+    </div>
+    <PressKit site={site} members={members} />
+  </main>
+  <Footer site={site} />
+</Base>
