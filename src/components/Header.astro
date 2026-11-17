@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-white.png';
+import { url } from '../lib/paths';
+import { SECTION_LABELS, type SectionId } from '../lib/sections';
+
+interface Props {
+  sections: SectionId[];
+  bandName: string;
+  /** Sit on top of the hero photo (home page). */
+  overlay?: boolean;
+  current?: 'press';
+}
+
+const { sections, bandName, overlay = false, current } = Astro.props;
+---
+
+<header class:list={['site-header', { overlay }]}>
+  <a class="home" href={url('')}>
+    <Image src={logo} width={56} height={56} alt={`${bandName} home`} loading="eager" />
+  </a>
+  <nav aria-label="Main">
+    <ul>
+      {
+        sections.map((id) => (
+          <li data-nav={id}>
+            <a href={url(`#${id}`)}>{SECTION_LABELS[id]}</a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={url('press/')} aria-current={current === 'press' ? 'page' : undefined}>Press</a>
+      </li>
+    </ul>
+  </nav>
+</header>

@@ -2,12 +2,8 @@
  * Design tokens: direction A, "Stage wash" (see docs/visual-direction.md).
  * Colors come from the stage lighting in the band's live photos.
  * tests/unit/tokens.test.ts checks the contrast pairs below.
+ * The fonts are self-hosted via @fontsource, imported in src/layouts/Base.astro.
  */
-@import '@fontsource/big-shoulders-display/500.css';
-@import '@fontsource/big-shoulders-display/800.css';
-@import '@fontsource/atkinson-hyperlegible/400.css';
-@import '@fontsource/atkinson-hyperlegible/700.css';
-
 :root {
   /* Color */
   --color-bg: #0a1a33;        /* the hall's blue dark */

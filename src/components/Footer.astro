@@ -1,0 +1,55 @@
+---
+import { siBandcamp, siFacebook, siInstagram, siSpotify, siTiktok, siYoutube } from 'simple-icons';
+import type { Site } from '../lib/site-schema';
+
+interface Props {
+  site: Site;
+}
+
+const { site } = Astro.props;
+const icons = [
+  { key: 'instagram', label: 'Instagram', icon: siInstagram },
+  { key: 'facebook', label: 'Facebook', icon: siFacebook },
+  { key: 'youtube', label: 'YouTube', icon: siYoutube },
+  { key: 'spotify', label: 'Spotify', icon: siSpotify },
+  { key: 'bandcamp', label: 'Bandcamp', icon: siBandcamp },
+  { key: 'tiktok', label: 'TikTok', icon: siTiktok },
+] as const;
+const social = icons.flatMap((s) => {
+  const href = site.social[s.key];
+  return href ? [{ ...s, href }] : [];
+});
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="booking">
+      Booking: <a href={`mailto:${site.press.bookingEmail}`}>{site.press.bookingEmail}</a>
+    </p>
+    {
+      (social.length > 0 || site.social.other.length > 0) && (
+        <ul class="social">
+          {social.map((s) => (
+            <li>
+              <a href={s.href} data-social={s.key}>
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                  <path d={s.icon.path} fill="currentColor" />
+                </svg>
+                <span class="sr-only">{s.label}</span>
+              </a>
+            </li>
+          ))}
+          {site.social.other.map((o) => (
+            <li>
+              <a href={o.url} data-social="other">
+                {o.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p class="copyright">&copy; {year} {site.band.name}</p>
+  </div>
+</footer>

@@ -1,0 +1,52 @@
+---
+import '@fontsource/big-shoulders-display/500';
+import '@fontsource/big-shoulders-display/800';
+import '@fontsource/atkinson-hyperlegible/400';
+import '@fontsource/atkinson-hyperlegible/700';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { resolveMedia } from '../lib/media';
+import { url } from '../lib/paths';
+import { loadSite } from '../lib/site-schema';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site path of this page, e.g. '' for home or 'press/'. */
+  path: string;
+}
+
+const { title, description, path } = Astro.props;
+const site = loadSite();
+const canonical = new URL(url(path), Astro.site).href;
+
+const share = resolveMedia(site.shareImage);
+const shareImage = share ? await getImage({ src: share, width: 1200, format: 'jpg' }) : undefined;
+const ogImage = shareImage ? new URL(shareImage.src, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <meta name="theme-color" content="#0a1a33" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.band.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:alt" content={`${site.band.name} live on stage`} />}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,51 @@
+---
+import { formatShowDate } from '../lib/dates';
+import type { Show } from '../lib/shows';
+
+interface Props {
+  shows: Show[];
+  today: string;
+}
+
+const { shows, today } = Astro.props;
+
+/** Split "Sat 12 Dec 2027" into the big day number and "Sat Dec 2027" beside it. */
+function dateParts(date: string) {
+  const full = formatShowDate(date, today);
+  const [weekday, day, month, year] = full.split(' ');
+  return { full, day, rest: [weekday, month, year].filter(Boolean).join(' ') };
+}
+---
+
+<section id="shows" class="section" aria-labelledby="shows-title">
+  <h2 id="shows-title">Shows</h2>
+  <ol class="shows">
+    {
+      shows.map((show) => {
+        const d = dateParts(show.date);
+        const where = [show.city, show.country].filter(Boolean).join(', ');
+        return (
+          <li data-show-date={show.date}>
+            <time datetime={show.date}>
+              <span aria-hidden="true">
+                <b>{d.day}</b>
+                <i>{d.rest}</i>
+              </span>
+              <span class="sr-only">{d.full}</span>
+            </time>
+            <div class="show-info">
+              <p class="venue">{show.venue}</p>
+              <p class="where">{where}</p>
+              {show.note && <p class="note">{show.note}</p>}
+            </div>
+            {show.ticketUrl && (
+              <a class="tickets" href={show.ticketUrl}>
+                Tickets<span class="sr-only"> for {show.venue}, {show.city}</span>
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</section>
