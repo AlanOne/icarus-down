@@ -304,29 +304,45 @@ p {
 
 .shows li {
   display: grid;
-  grid-template-columns: 6.5rem 1fr auto;
-  gap: var(--space-2) var(--space-5);
+  grid-template-columns: 5.5rem 1fr auto;
+  gap: var(--space-2) var(--space-6);
   align-items: center;
   padding: var(--space-5) 0;
   border-top: 1px solid var(--color-line);
 }
 
-.shows time {
+/* Each date is a small calendar tile: month (and year, if not this year), day, weekday. */
+.show-date {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  width: 5.5rem;
+  padding: var(--space-2) var(--space-1) var(--space-3);
+  border: 1px solid var(--color-line);
+  border-top: 3px solid var(--color-accent);
   font-family: var(--font-display);
-  line-height: 0.9;
+  text-align: center;
+  line-height: 1;
 }
 
-.shows time b {
-  display: block;
-  font-size: 3.25rem;
+.show-month {
+  color: var(--color-accent);
+  font-size: var(--step-0);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.show-day {
+  margin: var(--space-1) 0;
+  font-size: 2.75rem;
   font-weight: 800;
 }
 
-.shows time i {
-  font-style: normal;
-  font-size: var(--step-0);
-  font-weight: 500;
+.show-weekday {
   color: var(--color-muted);
+  font-size: var(--step--1);
+  font-weight: 500;
 }
 
 .shows .venue {
@@ -347,7 +363,8 @@ p {
 
 @media (max-width: 40rem) {
   .shows li {
-    grid-template-columns: 5rem 1fr;
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-2) var(--space-5);
   }
 
   .shows .tickets {

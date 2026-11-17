@@ -44,6 +44,18 @@ describe('home page', () => {
     for (const li of items) expect(li.getAttribute('data-show-date')).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
+  it('heads the shows section "Upcoming shows", with each date as month, day and weekday', () => {
+    const section = doc.getElementById('shows');
+    if (!section) return; // no upcoming shows: no section
+    expect(section.querySelector('h2')?.textContent?.trim()).toBe('Upcoming shows');
+    for (const li of section.querySelectorAll('li')) {
+      const t = li.querySelector('time')!;
+      expect(t.querySelector('.show-month')?.textContent?.trim()).toMatch(/^[A-Z][a-z]{2}( \d{4})?$/);
+      expect(t.querySelector('.show-day')?.textContent?.trim()).toMatch(/^\d{1,2}$/);
+      expect(t.querySelector('.show-weekday')?.textContent?.trim()).toMatch(/^[A-Z][a-z]{2}$/);
+    }
+  });
+
   it('names every ticket link by venue and city', () => {
     for (const a of doc.querySelectorAll('#shows a')) {
       expect(a.textContent?.replace(/\s+/g, ' ').trim()).toMatch(/^Tickets for .+, .+$/);

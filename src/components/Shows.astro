@@ -10,16 +10,16 @@ interface Props {
 
 const { shows, today } = Astro.props;
 
-/** Split "Sat 12 Dec 2027" into the big day number and "Sat Dec 2027" beside it. */
+/** Split "Sat 12 Dec 2027" into a calendar tile: "Dec 2027" / "12" / "Sat". */
 function dateParts(date: string) {
   const full = formatShowDate(date, today);
   const [weekday, day, month, year] = full.split(' ');
-  return { full, day, rest: [weekday, month, year].filter(Boolean).join(' ') };
+  return { full, weekday, day, month: [month, year].filter(Boolean).join(' ') };
 }
 ---
 
 <section id="shows" class="section" aria-labelledby="shows-title">
-  <h2 id="shows-title">Shows</h2>
+  <h2 id="shows-title">Upcoming shows</h2>
   <ol class="shows">
     {
       shows.map((show) => {
@@ -27,11 +27,10 @@ function dateParts(date: string) {
         const where = [show.city, show.country].filter(Boolean).join(', ');
         return (
           <li data-show-date={show.date}>
-            <time datetime={show.date}>
-              <span aria-hidden="true">
-                <b>{d.day}</b>
-                <i>{d.rest}</i>
-              </span>
+            <time datetime={show.date} class="show-date">
+              <span class="show-month" aria-hidden="true">{d.month}</span>
+              <span class="show-day" aria-hidden="true">{d.day}</span>
+              <span class="show-weekday" aria-hidden="true">{d.weekday}</span>
               <span class="sr-only">{d.full}</span>
             </time>
             <div class="show-info">
