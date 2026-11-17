@@ -667,7 +667,7 @@ p {
 }
 
 .video-dialog::backdrop {
-  background: rgb(5 13 26 / 0.9);
+  background: rgb(3 8 16 / 0.92);
 }
 
 .video-dialog-frame iframe {
