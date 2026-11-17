@@ -74,6 +74,7 @@ describe('home page', () => {
     const expected: Record<string, boolean> = {
       shows: upcoming > 0,
       music: contentEntries('releases').length > 0,
+      merch: contentEntries('merch').length > 0,
       about: !blank(site.band?.shortBio?.trim?.()) || contentEntries('members').length > 0,
     };
     for (const [id, has] of Object.entries(expected)) {
@@ -116,3 +117,25 @@ describe('home page', () => {
   });
 });
 
+describe('merch', () => {
+  const doc = page('index.html');
+  const items = contentEntries('merch');
+
+  it('lists every merch item, sold-out ones without a Buy button', () => {
+    const cards = [...doc.querySelectorAll('#merch [data-merch]')];
+    expect(cards.length).toBe(items.length);
+    for (const item of items) {
+      const card = doc.querySelector(`#merch [data-merch="${item.id}"]`)!;
+      expect(card.textContent).toContain(item.name as string);
+      expect(card.textContent).toContain(item.price as string);
+      const buy = card.querySelector('a.buy');
+      if (item.soldOut === true || !item.url) {
+        expect(buy).toBeNull();
+        if (item.soldOut === true) expect(card.textContent).toMatch(/Sold out/);
+      } else {
+        expect(buy?.getAttribute('href')).toMatch(/^https:\/\//);
+        expect(buy?.textContent).toMatch(/Buy/);
+      }
+    }
+  });
+});

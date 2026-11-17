@@ -702,3 +702,47 @@ p {
   cursor: pointer;
 }
 
+/* ---- Merch ---- */
+
+.merch {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-7) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.merch-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  margin-bottom: var(--space-4);
+}
+
+.merch-item h3 {
+  font-size: var(--step-2);
+  margin-bottom: var(--space-2);
+}
+
+.merch-description {
+  color: var(--color-muted);
+  margin-bottom: var(--space-2);
+}
+
+.merch-price {
+  font-weight: 700;
+  font-size: var(--step-1);
+  margin-bottom: var(--space-3);
+}
+
+.merch-sold-out {
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.merch-item.sold-out .merch-photo {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+

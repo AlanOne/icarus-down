@@ -166,6 +166,44 @@ content:
         required: true
         description: Members are listed from the lowest number up.
 
+  - name: merch
+    label: Merch
+    type: collection
+    path: src/content/merch
+    format: yaml-frontmatter
+    description: Shown on the home page after Music. The section hides itself when there are no items.
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: image
+        label: Photo
+        type: image
+        required: true
+        options:
+          media: images
+      - name: price
+        label: Price
+        type: string
+        required: true
+        description: As it should read, for example "€15" or "from €5".
+      - name: url
+        label: Shop link
+        type: string
+        description: Where fans buy it (Bandcamp, a shop page). Full link starting with https://
+      - name: description
+        label: Short description
+        type: text
+      - name: soldOut
+        label: Sold out
+        type: boolean
+        description: Keeps the item listed with "Sold out" instead of the Buy button.
+      - name: order
+        label: Order
+        type: number
+        description: Lower numbers first. Leave empty to sort by name.
+
   - name: site
     label: Band & press
     type: file

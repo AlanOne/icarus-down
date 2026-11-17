@@ -3,13 +3,14 @@ import About from '../components/About.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Merch from '../components/Merch.astro';
 import Music from '../components/Music.astro';
 import Shows from '../components/Shows.astro';
 import Videos from '../components/Videos.astro';
 import Base from '../layouts/Base.astro';
 import { loadPageData } from '../lib/page-data';
 
-const { site, today, shows, releases, members, videos, sections } = await loadPageData();
+const { site, today, shows, releases, members, merch, videos, sections } = await loadPageData();
 // The short bio's first line, or a plain fallback so the page never has an empty description.
 const description =
   site.band.shortBio.trim().split(/\n/)[0] || `${site.band.name}: music, videos and upcoming shows.`;
@@ -31,6 +32,7 @@ const description =
     />
     {sections.includes('shows') && <Shows shows={shows} today={today} />}
     {sections.includes('music') && <Music releases={releases} today={today} />}
+    {sections.includes('merch') && <Merch items={merch} />}
     {sections.includes('videos') && <Videos videos={videos} />}
     {sections.includes('about') && <About shortBio={site.band.shortBio} members={members} />}
   </main>

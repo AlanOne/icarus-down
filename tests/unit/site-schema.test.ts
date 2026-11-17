@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   dateString,
+  merchSchema,
   loadSite,
   optionalString,
   optionalUrl,
@@ -164,3 +165,21 @@ describe('hero slideshow photos', () => {
   });
 });
 
+describe('merch items', () => {
+  const item = { name: 'Life Kit EP CD', image: '/src/assets/media/x.jpg', price: '€5' };
+
+  it('needs a name, photo and price; the rest is optional', () => {
+    const m = merchSchema.parse({ ...item, url: '', description: '', soldOut: null, order: null });
+    expect(m).toMatchObject({ name: 'Life Kit EP CD', price: '€5', soldOut: false });
+    expect(m.url).toBeUndefined();
+    expect(m.description).toBeUndefined();
+    expect(() => merchSchema.parse({ ...item, price: '' })).toThrow();
+  });
+
+  it('reads the shop link and sold-out switch', () => {
+    const m = merchSchema.parse({ ...item, url: 'icarusdown.bandcamp.com/album/life-kit-ep', soldOut: true, order: 2 });
+    expect(m.url).toBe('https://icarusdown.bandcamp.com/album/life-kit-ep');
+    expect(m.soldOut).toBe(true);
+    expect(m.order).toBe(2);
+  });
+});

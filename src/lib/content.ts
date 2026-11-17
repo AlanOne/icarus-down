@@ -23,5 +23,12 @@ export async function loadMembers() {
     .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
 }
 
+export async function loadMerch() {
+  return (await getCollection('merch'))
+    .map((e) => ({ slug: e.id, ...e.data }))
+    .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity) || a.name.localeCompare(b.name));
+}
+
 export type Member = Awaited<ReturnType<typeof loadMembers>>[number];
+export type MerchItem = Awaited<ReturnType<typeof loadMerch>>[number];
 export type Video = Awaited<ReturnType<typeof loadVideos>>[number];

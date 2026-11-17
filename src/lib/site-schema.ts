@@ -90,6 +90,18 @@ export const memberSchema = z.object({
   order: z.number(),
 });
 
+export const merchSchema = z.object({
+  name: z.string().min(1),
+  image: mediaPath,
+  price: z.string().min(1),
+  /** Where to buy it (Bandcamp, a print-on-demand shop, ...). */
+  url: optionalUrl,
+  description: optionalString,
+  soldOut: z.preprocess((v) => v ?? false, z.boolean()),
+  /** Lower numbers first; items without one come after, by name. */
+  order: z.preprocess((v) => (v === '' || v === null ? undefined : v), z.number().optional()),
+});
+
 // ---- Site data (src/data/site.json) ----
 
 export const siteSchema = z.object({

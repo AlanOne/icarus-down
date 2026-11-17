@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import type { z } from 'astro/zod';
 import {
   memberSchema,
+  merchSchema,
   releaseSchema,
   showSchema,
   siteSchema,
@@ -61,6 +62,7 @@ const schemas = {
   releases: releaseSchema,
   videos: videoSchema,
   members: memberSchema,
+  merch: merchSchema,
   site: siteSchema,
 };
 
@@ -70,7 +72,7 @@ describe('.pages.yml', () => {
   });
 
   it('stores collections as YAML frontmatter under src/content and site data as JSON', () => {
-    for (const name of ['shows', 'releases', 'videos', 'members']) {
+    for (const name of ['shows', 'releases', 'videos', 'members', 'merch']) {
       expect(entry(name)).toMatchObject({ type: 'collection', path: `src/content/${name}`, format: 'yaml-frontmatter' });
     }
     expect(entry('site')).toMatchObject({ type: 'file', path: 'src/data/site.json', format: 'json' });
@@ -103,7 +105,7 @@ describe('.pages.yml', () => {
   it('uses the images library for every image field and files for the tech rider', () => {
     const fields = config.content.flatMap((e) => allFields(e.fields));
     const images = fields.filter((f) => f.type === 'image');
-    expect(images.map((f) => f.name).sort()).toEqual(['cover', 'heroPhoto', 'heroPhotos', 'image', 'photo', 'shareImage']);
+    expect(images.map((f) => f.name).sort()).toEqual(['cover', 'heroPhoto', 'heroPhotos', 'image', 'image', 'photo', 'shareImage']);
     for (const f of images) expect(f.options?.media).toBe('images');
     const rider = fields.find((f) => f.name === 'techRider')!;
     expect(rider).toMatchObject({ type: 'file', options: { media: 'files' } });

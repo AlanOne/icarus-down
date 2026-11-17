@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { MerchItem } from '../lib/content';
+import { resolveMedia } from '../lib/media';
+import { newTab } from '../lib/paths';
+
+interface Props {
+  items: MerchItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="merch" class="section" aria-labelledby="merch-title">
+  <h2 id="merch-title">Merch</h2>
+  <ul class="merch">
+    {
+      items.map((item) => {
+        const photo = resolveMedia(item.image);
+        return (
+          <li class:list={['merch-item', { 'sold-out': item.soldOut }]} data-merch={item.slug}>
+            {photo && <Image src={photo} width={480} height={480} alt="" class="merch-photo" />}
+            <h3>{item.name}</h3>
+            {item.description && <p class="merch-description">{item.description}</p>}
+            <p class="merch-price">{item.price}</p>
+            {item.soldOut ? (
+              <p class="merch-sold-out">Sold out</p>
+            ) : (
+              item.url && (
+                <a class="btn buy" href={item.url} {...newTab}>
+                  Buy<span class="sr-only"> {item.name}</span>
+                </a>
+              )
+            )}
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
