@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { contentEntries, page, todayIn, ymd } from './helpers';
+import { blank, contentEntries, page, siteData, todayIn, ymd } from './helpers';
 
 const doc = page('index.html');
 const today = todayIn(new Date());
@@ -61,11 +61,32 @@ describe('home page', () => {
 
   it('labels every social link and links booking by email', () => {
     const social = doc.querySelectorAll('footer a[data-social]');
-    expect(social.length).toBeGreaterThan(0);
     for (const a of social) {
       expect(a.textContent?.trim()).not.toBe('');
       expect(a.getAttribute('href')).toMatch(/^https:\/\//);
     }
     expect(doc.querySelector('footer a[href^="mailto:"]')).not.toBeNull();
+  });
+
+  it('renders a section only when it has content, and links only those in the nav', () => {
+    const site = siteData();
+    const upcoming = contentEntries('shows').filter((s) => ymd(s.date) >= today).length;
+    const expected: Record<string, boolean> = {
+      shows: upcoming > 0,
+      music: contentEntries('releases').length > 0,
+      about: !blank(site.band?.shortBio?.trim?.()) || contentEntries('members').length > 0,
+    };
+    for (const [id, has] of Object.entries(expected)) {
+      expect(Boolean(doc.getElementById(id)), `#${id}`).toBe(has);
+      expect(Boolean(doc.querySelector(`header [data-nav="${id}"]`)), `nav ${id}`).toBe(has);
+    }
+    // Videos can be dropped at build time (bad or deleted links), so: no section without a video.
+    const videos = doc.getElementById('videos');
+    if (videos) expect(videos.querySelectorAll('button[data-embed]').length).toBeGreaterThan(0);
+    expect(Boolean(doc.querySelector('header [data-nav="videos"]'))).toBe(Boolean(videos));
+  });
+
+  it('always has the band name in the hero', () => {
+    expect(doc.querySelector('.hero h1')?.textContent?.trim()).toBe(siteData().band.name);
   });
 });

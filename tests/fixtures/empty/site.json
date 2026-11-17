@@ -1,0 +1,18 @@
+{
+  "band": {
+    "name": "Icarus Down",
+    "heroPhoto": "/src/assets/media/zagorje-2026-singer.jpg"
+  },
+  "press": {
+    "photos": null,
+    "fullResKitUrl": "",
+    "techRider": "",
+    "bookingEmail": "booking@example.com",
+    "bookingPhone": ""
+  },
+  "social": {
+    "instagram": "",
+    "other": null
+  },
+  "shareImage": "/src/assets/media/share-image.jpg"
+}

@@ -1,16 +1,7 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
-
-const DIST = join(process.cwd(), 'dist');
-
-function htmlFiles(dir: string): string[] {
-  return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
-    const p = join(dir, e.name);
-    if (e.isDirectory()) return htmlFiles(p);
-    return e.name.endsWith('.html') ? [p] : [];
-  });
-}
+import { DIST, htmlFiles } from './helpers';
 
 /** Every root-relative URL in href, src and srcset attributes. */
 function rootRelativeUrls(html: string): string[] {

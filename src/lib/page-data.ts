@@ -4,7 +4,7 @@ import { todayIn } from './dates';
 import { sectionsToRender } from './sections';
 import { upcomingShows } from './shows';
 import { loadSite } from './site-schema';
-import { youtubeId } from './youtube';
+import { playableVideos } from './youtube';
 
 export async function loadPageData() {
   const site = loadSite();
@@ -13,15 +13,8 @@ export async function loadPageData() {
   const releases = await loadReleases();
   const members = await loadMembers();
 
-  // A video whose link isn't a YouTube link is left out rather than shown broken.
-  const videos = (await loadVideos()).flatMap((v) => {
-    const id = youtubeId(v.url);
-    if (!id) {
-      console.warn(`[videos] Skipping "${v.title}": not a YouTube link (${v.url})`);
-      return [];
-    }
-    return [{ ...v, youtubeId: id }];
-  });
+  // Links that aren't YouTube, and videos that are gone, are left out rather than failing the build.
+  const videos = await playableVideos(await loadVideos());
 
   const sections = sectionsToRender({
     releases: releases.length,

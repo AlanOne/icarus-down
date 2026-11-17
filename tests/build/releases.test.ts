@@ -14,9 +14,7 @@ const visible = (el: Element) => !el.closest('[hidden]');
 
 describe('releases', () => {
   it('shows the right state for every release block on build day', () => {
-    const blocks = doc.querySelectorAll('[data-release-date]');
-    expect(blocks.length).toBeGreaterThan(0);
-    for (const block of blocks) {
+    for (const block of doc.querySelectorAll('[data-release-date]')) {
       const date = block.getAttribute('data-release-date')!;
       const want = date > today ? 'upcoming' : 'out';
       const other = want === 'upcoming' ? 'out' : 'upcoming';
@@ -28,7 +26,6 @@ describe('releases', () => {
   it('renders the seeded upcoming release with Pre-save visible and listen buttons hidden', () => {
     // For any content: every upcoming release with a pre-save link shows it, and hides its listen buttons.
     const upcoming = releases.filter((r) => r.date > today && r.presaveUrl);
-    expect(upcoming.length, 'seed content should include an upcoming release with a pre-save link').toBeGreaterThan(0);
     for (const r of upcoming) {
       const block = doc.querySelector(`#music [data-release="${r.id}"]`)!;
       const presave = [...block.querySelectorAll('[data-state="upcoming"] a')].find((a) => a.textContent?.includes('Pre-save'));
@@ -46,10 +43,15 @@ describe('releases', () => {
 
   it('features exactly one release in the hero: the nearest upcoming, else the newest out', () => {
     const shown = [...doc.querySelectorAll('[data-hero-candidate]')].filter(visible);
-    expect(shown.length).toBe(1);
     const up = releases.filter((r) => r.date > today).sort((a, b) => a.date.localeCompare(b.date));
     const out = releases.filter((r) => r.date <= today).sort((a, b) => b.date.localeCompare(a.date));
-    expect(shown[0].getAttribute('data-release')).toBe((up[0] ?? out[0]).id);
+    const featured = up[0] ?? out[0];
+    if (!featured) {
+      expect(shown.length).toBe(0); // no releases: the hero is the band photo and name only
+      return;
+    }
+    expect(shown.length).toBe(1);
+    expect(shown[0].getAttribute('data-release')).toBe(featured.id);
   });
 
   it('offers every upcoming release and the newest out release as hero candidates', () => {
@@ -80,9 +82,13 @@ describe('links and third parties', () => {
   });
 
   it('gives each video a play button named after the video', () => {
+    // Bad or deleted links are dropped at build time, so every button maps to a video
+    // in the content, but not every video in the content has to have a button.
+    const titles = new Set(contentEntries('videos').map((v) => v.title as string));
     const buttons = doc.querySelectorAll('#videos button[data-embed]');
-    expect(buttons.length).toBe(contentEntries('videos').length);
+    expect(buttons.length).toBeLessThanOrEqual(titles.size);
     for (const b of buttons) {
+      expect(titles.has(b.getAttribute('aria-label')!.replace(/^Play video: /, ''))).toBe(true);
       expect(b.getAttribute('aria-label')).toMatch(/^Play video: .+/);
       expect(b.getAttribute('data-embed')).toMatch(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]{11}\?autoplay=1$/);
     }

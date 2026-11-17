@@ -29,21 +29,23 @@ const photos = press.photos.flatMap((p) => {
 });
 ---
 
-<section class="section" aria-labelledby="bio-title">
-  <h2 id="bio-title">Bio</h2>
-  <div class="bio">{bio.map((p) => <p>{p}</p>)}</div>
-  {
-    members.length > 0 && (
-      <ul class="lineup">
-        {members.map((m) => (
-          <li>
-            <span class="member-name">{m.name}</span> <span class="member-role">{m.role}</span>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-</section>
+{
+  (bio.length > 0 || members.length > 0) && (
+    <section class="section" aria-labelledby="bio-title">
+      <h2 id="bio-title">Bio</h2>
+      {bio.length > 0 && <div class="bio">{bio.map((p) => <p>{p}</p>)}</div>}
+      {members.length > 0 && (
+        <ul class="lineup">
+          {members.map((m) => (
+            <li>
+              <span class="member-name">{m.name}</span> <span class="member-role">{m.role}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}
 
 {
   (photos.length > 0 || press.fullResKitUrl) && (

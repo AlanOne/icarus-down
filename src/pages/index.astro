@@ -10,11 +10,14 @@ import Base from '../layouts/Base.astro';
 import { loadPageData } from '../lib/page-data';
 
 const { site, today, shows, releases, members, videos, sections } = await loadPageData();
+// The short bio's first line, or a plain fallback so the page never has an empty description.
+const description =
+  site.band.shortBio.trim().split(/\n/)[0] || `${site.band.name}: music, videos and upcoming shows.`;
 ---
 
 <Base
   title={`${site.band.name}: music, videos and upcoming shows`}
-  description={site.band.shortBio.split(/\n/)[0]}
+  description={description}
   path=""
 >
   <Header sections={sections} bandName={site.band.name} overlay />

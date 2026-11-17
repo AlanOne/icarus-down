@@ -5,7 +5,9 @@ import {
   optionalString,
   optionalUrl,
   showSchema,
+  releaseSchema,
   siteSchema,
+  videoSchema,
 } from '../../src/lib/site-schema';
 
 describe('optional fields', () => {
@@ -69,3 +71,49 @@ describe('site data', () => {
     expect(site.press.techRider).toBeUndefined();
   });
 });
+
+describe('what Pages CMS might save', () => {
+  const minimal = {
+    band: { name: 'X', heroPhoto: '/src/assets/media/x.jpg' },
+    press: { bookingEmail: 'booking@example.com' },
+    social: {},
+    shareImage: '/src/assets/media/x.jpg',
+  };
+
+  it('accepts missing bios as empty', () => {
+    const site = siteSchema.parse(minimal);
+    expect(site.band.shortBio).toBe('');
+    expect(site.band.longBio).toBe('');
+  });
+
+  it('accepts null lists and objects as empty', () => {
+    const site = siteSchema.parse({
+      ...minimal,
+      band: { ...minimal.band, shortBio: null, longBio: null },
+      press: { ...minimal.press, photos: null, techRider: null },
+      social: { other: null, instagram: null },
+    });
+    expect(site.press.photos).toEqual([]);
+    expect(site.social.other).toEqual([]);
+    expect(site.band.shortBio).toBe('');
+  });
+
+  it('accepts null release links', () => {
+    const r = releaseSchema.parse({ title: 'T', type: 'single', date: '2026-12-12', cover: '/c.jpg', links: null });
+    expect(r.links).toEqual({});
+    const r2 = releaseSchema.parse({ title: 'T', type: 'single', date: '2026-12-12', cover: '/c.jpg', links: { other: null } });
+    expect(r2.links.other).toBeUndefined();
+  });
+
+  it('adds https:// to a link pasted without it', () => {
+    expect(optionalUrl.parse('instagram.com/icarusdown')).toBe('https://instagram.com/icarusdown');
+    expect(optionalUrl.parse('www.facebook.com/icarusdown/')).toBe('https://www.facebook.com/icarusdown/');
+    expect(videoSchema.parse({ title: 'V', url: 'youtu.be/dQw4w9WgXcQ', date: '2026-01-01' }).url).toBe('https://youtu.be/dQw4w9WgXcQ');
+  });
+
+  it('still rejects text that is not a link', () => {
+    expect(() => optionalUrl.parse('at the door')).toThrow();
+    expect(() => optionalUrl.parse('tba')).toThrow();
+  });
+});
+

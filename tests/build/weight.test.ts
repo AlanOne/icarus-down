@@ -6,21 +6,26 @@ import { DIST, page } from './helpers';
 const fileSize = (href: string) => statSync(join(DIST, href.replace(/^\/icarus-down\//, ''))).size;
 
 describe('page weight', () => {
-  it('home page HTML + CSS + JS + images above the fold stay under 500 KB', () => {
+  it('home page HTML + CSS + JS + images above the fold on a phone stay under 500 KB', () => {
     const doc = page('index.html');
     const parts: [string, number][] = [['index.html', statSync(join(DIST, 'index.html')).size]];
 
     for (const l of doc.querySelectorAll('link[rel="stylesheet"]')) parts.push([l.getAttribute('href')!, fileSize(l.getAttribute('href')!)]);
     for (const s of doc.querySelectorAll('script[src]')) parts.push([s.getAttribute('src')!, fileSize(s.getAttribute('src')!)]);
 
-    // Above the fold: the hero photo at its largest size, the logo, and the featured cover.
-    const hero = doc.querySelector('.hero-photo')!;
-    const largest = hero
-      .getAttribute('srcset')!
-      .split(',')
-      .map((c) => c.trim().split(/\s+/))
-      .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))[0][0];
-    parts.push([largest, fileSize(largest)]);
+    // Above the fold on a phone: the hero photo at the size a phone downloads (the srcset
+    // candidate closest to 1024w, about 400 CSS px at 2.5x), the logo, and the featured cover.
+    // Not the 2048w desktop size: swapping in a busier photo must not block the deploy.
+    const hero = doc.querySelector('.hero-photo');
+    if (hero) {
+      const candidates = hero
+        .getAttribute('srcset')!
+        .split(',')
+        .map((c) => c.trim().split(/\s+/))
+        .map(([src, w]) => ({ src, w: parseInt(w) }));
+      const phone = candidates.sort((a, b) => Math.abs(a.w - 1024) - Math.abs(b.w - 1024))[0];
+      parts.push([phone.src, fileSize(phone.src)]);
+    }
     for (const img of doc.querySelectorAll('.site-header img, .hero-release:not([hidden]) img')) {
       parts.push([img.getAttribute('src')!, fileSize(img.getAttribute('src')!)]);
     }

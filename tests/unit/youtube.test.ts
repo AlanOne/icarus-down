@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { embedUrl, thumbnailUrl, youtubeId } from '../../src/lib/youtube';
+import { describe, expect, it, vi } from 'vitest';
+import { embedUrl, playableVideos, thumbnailUrl, youtubeId } from '../../src/lib/youtube';
 
 describe('youtubeId', () => {
   it.each([
@@ -40,3 +40,42 @@ describe('thumbnailUrl and embedUrl', () => {
     expect(embedUrl('dQw4w9WgXcQ')).toBe('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1');
   });
 });
+
+describe('playableVideos', () => {
+  const v = (title: string, url: string) => ({ title, url });
+  const quiet = () => vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+  it('keeps videos whose thumbnail exists and adds their ID', async () => {
+    const out = await playableVideos([v('A', 'https://youtu.be/aaaaaaaaaaa')], async () => true);
+    expect(out).toEqual([{ title: 'A', url: 'https://youtu.be/aaaaaaaaaaa', youtubeId: 'aaaaaaaaaaa' }]);
+  });
+
+  it('drops a link that is not a YouTube link, with a warning', async () => {
+    const warn = quiet();
+    const out = await playableVideos([v('Vimeo', 'https://vimeo.com/1')], async () => true);
+    expect(out).toEqual([]);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('Vimeo'));
+    warn.mockRestore();
+  });
+
+  it('drops a well-formed ID whose video is gone (thumbnail 404), with a warning', async () => {
+    const warn = quiet();
+    const out = await playableVideos(
+      [v('Gone', 'https://youtu.be/deletedvid1'), v('Here', 'https://youtu.be/bbbbbbbbbbb')],
+      async (id) => id !== 'deletedvid1',
+    );
+    expect(out.map((x) => x.title)).toEqual(['Here']);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('Gone'));
+    warn.mockRestore();
+  });
+
+  it('drops a video when the check itself fails (network error)', async () => {
+    const warn = quiet();
+    const out = await playableVideos([v('A', 'https://youtu.be/aaaaaaaaaaa')], async () => {
+      throw new Error('offline');
+    });
+    expect(out).toEqual([]);
+    warn.mockRestore();
+  });
+});
+
