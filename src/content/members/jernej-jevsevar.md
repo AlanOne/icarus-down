@@ -1,5 +1,5 @@
 ---
-name: PLACEHOLDER Member 1
+name: Jernej Jevševar
 role: Vocals
 order: 1
 ---

@@ -1,5 +1,5 @@
 ---
-name: PLACEHOLDER Member 2
+name: Alan Jančič
 role: Guitar
 order: 2
 ---

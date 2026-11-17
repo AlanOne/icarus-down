@@ -1,5 +1,5 @@
 ---
-name: PLACEHOLDER Member 3
+name: Domen Učakar
 role: Bass
 order: 3
 ---
