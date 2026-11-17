@@ -7,7 +7,7 @@
     "heroPhotos": [
       "/src/assets/media/Zagorje 2026 Stage.JPG",
       "/src/assets/media/hero-2006-mct-trbovlje-vocals.jpg",
-      "/src/assets/media/zagorje-2026-bass-and-drums.jpg",
+      "/src/assets/media/zagorje-2026-guitar-and-drums.jpg",
       "/src/assets/media/hero-2006-mct-trbovlje-keys-and-guitar.jpg",
       "/src/assets/media/zagorje-2026-drums.jpg",
       "/src/assets/media/hero-2006-mct-trbovlje-scream.jpg",
@@ -35,8 +35,8 @@
         "caption": "Live at MC ZoS Zagorje, 2026"
       },
       {
-        "image": "/src/assets/media/zagorje-2026-bass-and-drums.jpg",
-        "caption": "Bass and drums, live at MC ZoS Zagorje, 2026"
+        "image": "/src/assets/media/zagorje-2026-guitar-and-drums.jpg",
+        "caption": "Guitar and drums, live at MC ZoS Zagorje, 2026"
       },
       {
         "image": "/src/assets/media/zagorje-2026-bass.jpg",
