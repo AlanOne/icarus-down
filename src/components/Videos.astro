@@ -1,0 +1,25 @@
+---
+import type { Video } from '../lib/content';
+import LiteYouTube from './LiteYouTube.astro';
+
+interface Props {
+  /** Videos whose YouTube ID already parsed; see index.astro. */
+  videos: (Video & { youtubeId: string })[];
+}
+
+const { videos } = Astro.props;
+---
+
+<section id="videos" class="section" aria-labelledby="videos-title">
+  <h2 id="videos-title">Videos</h2>
+  <ul class="videos">
+    {
+      videos.map((v) => (
+        <li>
+          <LiteYouTube id={v.youtubeId} title={v.title} />
+          <p class="video-title">{v.title}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

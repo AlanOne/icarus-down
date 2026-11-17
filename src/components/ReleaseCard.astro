@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import { resolveMedia } from '../lib/media';
+import type { Release } from '../lib/releases';
+import ReleaseStates from './ReleaseStates.astro';
+
+interface Props {
+  release: Release;
+  today: string;
+}
+
+const { release, today } = Astro.props;
+const cover = resolveMedia(release.cover);
+---
+
+<li class="release-card" data-release={release.slug} data-release-date={release.date}>
+  {cover && <Image src={cover} width={480} height={480} alt="" class="cover" />}
+  <h3>{release.title}</h3>
+  <ReleaseStates release={release} today={today} variant="card" />
+</li>

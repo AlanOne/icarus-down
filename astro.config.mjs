@@ -8,4 +8,6 @@ export default defineConfig({
   site: 'https://alanone.github.io',
   base: '/icarus-down',
   trailingSlash: 'always',
+  // Video thumbnails are downloaded at build time, so visitors never request them from YouTube.
+  image: { domains: ['i.ytimg.com'] },
 });

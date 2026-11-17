@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { resolveMedia } from '../lib/media';
+import { featuredRelease, releaseStatus, type Release } from '../lib/releases';
+import ReleaseStates from './ReleaseStates.astro';
+
+interface Props {
+  bandName: string;
+  heroPhoto: string;
+  releases: Release[];
+  today: string;
+}
+
+const { bandName, heroPhoto, releases, today } = Astro.props;
+const photo = resolveMedia(heroPhoto);
+
+// Every release that could be featured before the next build: all upcoming ones
+// plus the newest that is out. Only the one featured today is visible.
+const upcoming = releases.filter((r) => releaseStatus(r, today) === 'upcoming');
+const newestOut = releases
+  .filter((r) => releaseStatus(r, today) === 'out')
+  .sort((a, b) => b.date.localeCompare(a.date))[0];
+const candidates = [...upcoming, ...(newestOut ? [newestOut] : [])].sort((a, b) => a.date.localeCompare(b.date));
+const featured = featuredRelease(releases, today);
+---
+
+<div class="hero">
+  {
+    photo && (
+      <Image
+        src={photo}
+        alt=""
+        class="hero-photo"
+        widths={[640, 1024, 1600, 2048].filter((w) => w <= photo.width)}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )
+  }
+  <div class="hero-copy">
+    <h1>{bandName}</h1>
+    {
+      candidates.map((r) => {
+        const cover = resolveMedia(r.cover);
+        return (
+          <div class="hero-release" data-hero-candidate data-release={r.slug} data-release-date={r.date} hidden={r.slug !== featured?.slug}>
+            {cover && <Image src={cover} width={176} height={176} alt="" class="cover" loading="eager" />}
+            <div>
+              <p class="release-title">{r.title}</p>
+              <ReleaseStates release={r} today={today} variant="hero" />
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>

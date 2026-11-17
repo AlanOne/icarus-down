@@ -1,0 +1,18 @@
+---
+import { musicOrder, type Release } from '../lib/releases';
+import ReleaseCard from './ReleaseCard.astro';
+
+interface Props {
+  releases: Release[];
+  today: string;
+}
+
+const { releases, today } = Astro.props;
+---
+
+<section id="music" class="section" aria-labelledby="music-title">
+  <h2 id="music-title">Music</h2>
+  <ul class="releases">
+    {musicOrder(releases, today).map((r) => <ReleaseCard release={r} today={today} />)}
+  </ul>
+</section>

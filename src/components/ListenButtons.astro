@@ -1,0 +1,26 @@
+---
+import { listenLinks, type Release } from '../lib/releases';
+
+interface Props {
+  release: Release;
+  /** Big pill buttons in the hero, quieter outlined ones in the music list. */
+  size?: 'large' | 'small';
+}
+
+const { release, size = 'small' } = Astro.props;
+const links = listenLinks(release);
+---
+
+{
+  links.length > 0 && (
+    <ul class:list={['listen', size]} aria-label={`Listen to ${release.title}`}>
+      {links.map((l, i) => (
+        <li>
+          <a class:list={['btn', { 'btn-quiet': size === 'small' || i > 0 }]} href={l.url}>
+            {l.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

@@ -1,24 +1,35 @@
 ---
-import { Image } from 'astro:assets';
 import About from '../components/About.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Music from '../components/Music.astro';
 import Shows from '../components/Shows.astro';
+import Videos from '../components/Videos.astro';
 import Base from '../layouts/Base.astro';
 import { loadMembers, loadReleases, loadShows, loadVideos } from '../lib/content';
 import { todayIn } from '../lib/dates';
-import { resolveMedia } from '../lib/media';
 import { sectionsToRender } from '../lib/sections';
 import { upcomingShows } from '../lib/shows';
 import { loadSite } from '../lib/site-schema';
+import { youtubeId } from '../lib/youtube';
 
 const site = loadSite();
 const today = todayIn(new Date());
 
 const shows = upcomingShows(await loadShows(), today);
 const releases = await loadReleases();
-const videos = await loadVideos();
 const members = await loadMembers();
+
+// A video whose link isn't a YouTube link is left out rather than shown broken.
+const videos = (await loadVideos()).flatMap((v) => {
+  const id = youtubeId(v.url);
+  if (!id) {
+    console.warn(`[videos] Skipping "${v.title}": not a YouTube link (${v.url})`);
+    return [];
+  }
+  return [{ ...v, youtubeId: id }];
+});
 
 const sections = sectionsToRender({
   releases: releases.length,
@@ -27,7 +38,6 @@ const sections = sectionsToRender({
   members: members.length,
   shortBio: site.band.shortBio,
 });
-const heroPhoto = resolveMedia(site.band.heroPhoto);
 ---
 
 <Base
@@ -35,16 +45,12 @@ const heroPhoto = resolveMedia(site.band.heroPhoto);
   description={site.band.shortBio.split(/\n/)[0]}
   path=""
 >
-  {/* Music and Videos join the nav in Task 8, when their sections exist. */}
-  <Header sections={sections.filter((s) => s === 'shows' || s === 'about')} bandName={site.band.name} overlay />
+  <Header sections={sections} bandName={site.band.name} overlay />
   <main id="main">
-    <div class="hero">
-      {heroPhoto && <Image src={heroPhoto} alt="" class="hero-photo" widths={[640, 1024, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />}
-      <div class="hero-copy">
-        <h1>{site.band.name}</h1>
-      </div>
-    </div>
+    <Hero bandName={site.band.name} heroPhoto={site.band.heroPhoto} releases={releases} today={today} />
     {sections.includes('shows') && <Shows shows={shows} today={today} />}
+    {sections.includes('music') && <Music releases={releases} today={today} />}
+    {sections.includes('videos') && <Videos videos={videos} />}
     {sections.includes('about') && <About shortBio={site.band.shortBio} members={members} />}
   </main>
   <Footer site={site} />

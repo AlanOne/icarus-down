@@ -1,0 +1,38 @@
+---
+// Both states of a release are always in the HTML. The one that is wrong on build
+// day is hidden; src/scripts/live-dates.ts flips them on release day without a rebuild.
+import { formatReleaseDate } from '../lib/dates';
+import { releaseStatus, type Release } from '../lib/releases';
+import ListenButtons from './ListenButtons.astro';
+
+interface Props {
+  release: Release;
+  today: string;
+  variant: 'hero' | 'card';
+}
+
+const { release, today, variant } = Astro.props;
+const status = releaseStatus(release, today);
+const date = formatReleaseDate(release.date, today);
+const typeWord = { single: 'single', ep: 'EP', album: 'album' }[release.type];
+const typeLabel = { single: 'Single', ep: 'EP', album: 'Album' }[release.type];
+// Hero: "New single, out 12 Dec" / "Latest single". Music list: "Coming 12 Dec" / "Single, 15 May".
+const upcomingText = variant === 'hero' ? `New ${typeWord}, out ${date}` : `Coming ${date}`;
+const outText = variant === 'hero' ? `Latest ${typeWord}` : `${typeLabel}, ${date}`;
+const size = variant === 'hero' ? 'large' : 'small';
+---
+
+<div class="release-state" data-state="upcoming" hidden={status !== 'upcoming'}>
+  <p class="release-meta">{upcomingText}</p>
+  {
+    release.presaveUrl && (
+      <a class:list={['btn', { 'btn-quiet': variant === 'card' }]} href={release.presaveUrl}>
+        Pre-save<span class="sr-only"> {release.title}</span>
+      </a>
+    )
+  }
+</div>
+<div class="release-state" data-state="out" hidden={status !== 'out'}>
+  <p class="release-meta">{outText}</p>
+  <ListenButtons release={release} size={size} />
+</div>
