@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup C: Riso flyer</title>
+<!-- Mockup only: the real site self-hosts this font via @fontsource. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3f5f7;     /* cool copy-paper white */
+    --blue: #0b4ea2;      /* riso "medium blue" ink, used for the photo and body text */
+    --pink: #e4126b;      /* riso fluorescent pink, used for dates and buttons */
+    --ink: #10223d;
+    --font: 'Archivo', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.55 var(--font); }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+  header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem clamp(1rem, 4vw, 3rem); }
+  header img { width: 52px; height: 52px; filter: invert(1); mix-blend-mode: multiply; }
+  nav { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-weight: 700; font-stretch: 75%; font-size: 1.125rem; }
+  nav a { text-decoration: none; color: var(--blue); }
+  nav a:hover { text-decoration: underline; text-decoration-thickness: 3px; }
+
+  /* Two-ink print: the photo is printed in blue, the name overprints in pink. */
+  .hero { display: grid; grid-template-columns: repeat(12, 1fr); padding: 0 clamp(1rem, 4vw, 3rem); }
+  .print { grid-column: 1 / -1; grid-row: 1; background: var(--blue); aspect-ratio: 16 / 9; max-height: 78vh; width: 100%; overflow: hidden; }
+  .print img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: grayscale(1) contrast(1.6) brightness(1.15); mix-blend-mode: screen; }
+  h1 { grid-column: 1 / -1; grid-row: 1; align-self: end; margin: 0 0 -.12em -.04em; font-weight: 900; font-stretch: 62%; font-size: clamp(4.5rem, 19vw, 15rem); line-height: .8; color: var(--pink); text-transform: uppercase; }
+  .release { grid-column: 1 / span 12; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; padding-top: 2rem; }
+  .release img { width: 96px; height: 96px; transform: rotate(-3deg); }
+  .release p { margin: 0; }
+  .release strong { display: block; font-weight: 800; font-stretch: 75%; font-size: 2rem; line-height: 1; color: var(--blue); }
+  .btn { display: inline-block; padding: .8rem 1.5rem; background: var(--pink); color: #fff; font-weight: 800; font-stretch: 85%; text-decoration: none; font-size: 1.125rem; }
+  .btn:hover { background: var(--blue); }
+
+  section { padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem); max-width: 68rem; }
+  h2 { margin: 0 0 1rem; font-weight: 900; font-stretch: 62%; font-size: clamp(3rem, 9vw, 6rem); line-height: .85; color: var(--blue); text-transform: uppercase; }
+  ol { list-style: none; margin: 0; padding: 0; }
+  li { display: grid; grid-template-columns: minmax(7rem, 11rem) 1fr auto; gap: .25rem 1.5rem; align-items: baseline; padding: 1rem 0; border-bottom: 3px solid var(--blue); }
+  time { font-weight: 900; font-stretch: 62%; font-size: 2.5rem; line-height: 1; color: var(--pink); }
+  .venue { font-weight: 800; font-size: 1.375rem; color: var(--blue); }
+  .where { grid-column: 2; }
+  .tickets { grid-row: 1; grid-column: 3; font-weight: 800; color: var(--pink); }
+  @media (max-width: 40rem) {
+    li { grid-template-columns: 1fr auto; }
+    time { grid-column: 1 / -1; }
+    .venue, .where { grid-column: 1; grid-row: auto; }
+    .tickets { grid-column: 2; grid-row: 2; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="../../src/assets/brand/logo.png" alt="Icarus Down">
+  <nav aria-label="Sections"><a href="#">Music</a><a href="#">Videos</a><a href="#shows">Shows</a><a href="#">About</a><a href="#">Press</a></nav>
+</header>
+<main>
+  <div class="hero">
+    <div class="print"><img src="../../src/assets/media/zagorje-2026-singer.jpg" alt="The singer and guitarist on stage"></div>
+    <h1>Icarus Down</h1>
+    <div class="release">
+      <img src="../../src/assets/media/cover-placeholder-1.jpg" alt="">
+      <p><strong>Upcoming Single</strong>New single, out 12 Dec</p>
+      <a class="btn" href="#">Pre-save</a>
+    </div>
+  </div>
+  <section id="shows">
+    <h2>Shows</h2>
+    <ol>
+      <li><time datetime="2026-11-28">Sat 28 Nov</time><div class="venue">Placeholder Club</div><div class="where">Ljubljana, Slovenia. Free entry</div><a class="tickets" href="#">Tickets</a></li>
+      <li><time datetime="2027-02-13">Sat 13 Feb 2027</time><div class="venue">Placeholder Hall</div><div class="where">Zagreb, Croatia</div></li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>

@@ -28,3 +28,6 @@ assets-inbox/
 
 # superpowers plan workspace
 .superpowers/
+
+# local Claude preview config (machine-specific paths)
+.claude/
