@@ -1,0 +1,20 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": [
+      "axe",
+      "htmlcs"
+    ],
+    "timeout": 30000,
+    "chromeLaunchConfig": {
+      "args": [
+        "--no-sandbox"
+      ]
+    },
+    "levelCapWhenNeedsReview": "warning"
+  },
+  "urls": [
+    "http://localhost:4321/icarus-down/",
+    "http://localhost:4321/icarus-down/press/"
+  ]
+}

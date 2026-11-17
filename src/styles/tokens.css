@@ -12,6 +12,10 @@
   --color-accent: #3ccbd9;    /* teal stage wash: buttons, links, focus */
   --color-accent-2: #9b7bff;  /* violet beam: section headings */
   --color-line: rgb(168 184 204 / 0.25);
+  /* Opacity of the background color behind any text on the hero photo. 0.85 keeps
+     text and muted text above 4.5:1 even over a pure white photo (tested). */
+  --hero-scrim: 0.85;
+  --scrim: color-mix(in srgb, var(--color-bg) calc(var(--hero-scrim) * 100%), transparent);
 
   /* Type */
   --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;

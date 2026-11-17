@@ -43,4 +43,16 @@ describe('design tokens', () => {
   ])('%s on %s meets WCAG AA (4.5:1)', (fg, bg) => {
     expect(contrast(token(fg), token(bg))).toBeGreaterThanOrEqual(4.5);
   });
+
+  it('keeps hero text readable over any photo, even pure white (scrim)', () => {
+    // Text on the hero photo always sits on --hero-scrim (bg color at this opacity).
+    // Worst case is a white photo behind it: blend bg over white and check the contrast.
+    const alpha = parseFloat(token('hero-scrim'));
+    const [br, bgc, bb] = token('color-bg').replace('#', '').match(/../g)!.map((c) => parseInt(c, 16));
+    const mix = (c: number) => Math.round(alpha * c + (1 - alpha) * 255).toString(16).padStart(2, '0');
+    const worst = `#${mix(br)}${mix(bgc)}${mix(bb)}`;
+    expect(contrast(token('color-text'), worst)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(token('color-muted'), worst)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(token('color-bg'), token('color-accent'))).toBeGreaterThanOrEqual(4.5);
+  });
 });

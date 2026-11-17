@@ -132,6 +132,9 @@ p {
   position: absolute;
   inset: 0 0 auto;
   z-index: 2;
+  /* Nav text sits on the scrim; it fades out below the header. */
+  padding-bottom: calc(var(--space-4) + 2rem);
+  background: linear-gradient(180deg, var(--scrim) calc(100% - 2rem), transparent 100%);
 }
 
 .site-header .home img {
@@ -181,24 +184,16 @@ p {
   object-position: 30% 40%;
 }
 
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgb(10 26 51 / 0.6) 0%,
-    rgb(10 26 51 / 0) 30%,
-    rgb(10 26 51 / 0.25) 55%,
-    var(--color-bg) 100%
-  );
-}
-
 .hero-copy {
   position: relative;
   z-index: 1;
+  /* Text starts below the padding, where the scrim is fully on. */
+  padding: 6rem var(--gutter) var(--space-7);
+  background: linear-gradient(180deg, transparent 0, var(--scrim) 6rem, var(--color-bg) 100%);
+}
+
+.hero-copy > * {
   max-width: 60rem;
-  padding: 0 var(--gutter) var(--space-7);
 }
 
 .hero h1 {

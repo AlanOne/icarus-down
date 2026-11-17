@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run tests/unit",
-    "test:build": "vitest run tests/build"
+    "test:build": "vitest run tests/build",
+    "a11y": "start-server-and-test \"astro preview --port 4321\" http-get://localhost:4321/icarus-down/ pa11y-ci"
   },
   "dependencies": {
     "@fontsource/atkinson-hyperlegible": "^5.3.0",
@@ -22,6 +23,8 @@
   "private": true,
   "devDependencies": {
     "happy-dom": "^21.0.4",
+    "pa11y-ci": "^5.0.0",
+    "start-server-and-test": "^3.0.13",
     "vitest": "^5.1.0",
     "yaml": "^2.9.1"
   }
