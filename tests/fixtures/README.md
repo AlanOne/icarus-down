@@ -9,3 +9,8 @@ against one and run the build tests on it with:
 members, no bios, no press photos, no tech rider, no social links. The build and every
 build test must still pass on it, so CI never blocks a deploy just because a section has
 nothing in it today.
+
+This and the pa11y accessibility check are not part of the deploy. Run them by hand
+before pushing code or design changes (not needed for content edits):
+
+    npm run check

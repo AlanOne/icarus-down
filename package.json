@@ -14,7 +14,8 @@
     "test:build": "vitest run tests/build",
     "a11y": "start-server-and-test \"astro preview --port 4321\" http-get://localhost:4321/icarus-down/ pa11y-ci",
     "test:fixture": "node scripts/test-fixture.mjs",
-    "test:empty": "node scripts/test-fixture.mjs tests/fixtures/empty"
+    "test:empty": "node scripts/test-fixture.mjs tests/fixtures/empty",
+    "check": "npm test && npm run build && npm run test:build && npm run a11y && npm run test:empty"
   },
   "dependencies": {
     "@fontsource/atkinson-hyperlegible": "^5.3.0",
