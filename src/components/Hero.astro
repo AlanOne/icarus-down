@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import { resolveMedia } from '../lib/media';
 import { featuredRelease, releaseStatus, type Release } from '../lib/releases';
 import ReleaseStates from './ReleaseStates.astro';
@@ -7,12 +7,27 @@ import ReleaseStates from './ReleaseStates.astro';
 interface Props {
   bandName: string;
   heroPhoto: string;
+  /** More photos for the slideshow after the main one (the press photos). */
+  morePhotos?: string[];
   releases: Release[];
   today: string;
 }
 
-const { bandName, heroPhoto, releases, today } = Astro.props;
+const { bandName, heroPhoto, morePhotos = [], releases, today } = Astro.props;
 const photo = resolveMedia(heroPhoto);
+const heroWidths = (w: number) => [640, 1024, 1600, 2048].filter((x) => x <= w);
+
+// Slideshow photos after the first: built now, but their sources sit in data-
+// attributes so they only load when src/scripts/hero-slideshow.ts is about to show them.
+const extra = await Promise.all(
+  [...new Set(morePhotos)]
+    .filter((p) => p !== heroPhoto)
+    .flatMap((p) => {
+      const img = resolveMedia(p);
+      return img ? [img] : [];
+    })
+    .map((img) => getImage({ src: img, widths: heroWidths(img.width), sizes: '100vw' })),
+);
 
 // Every release that could be featured before the next build: all upcoming ones
 // plus the out release that comes after them (the one marked featured, else the newest).
@@ -32,12 +47,40 @@ const featured = featuredRelease(releases, today);
       <Image
         src={photo}
         alt=""
-        class="hero-photo"
-        widths={[640, 1024, 1600, 2048].filter((w) => w <= photo.width)}
+        class="hero-photo is-active"
+        widths={heroWidths(photo.width)}
         sizes="100vw"
         loading="eager"
         fetchpriority="high"
       />
+    )
+  }
+  {
+    photo &&
+      extra.map((img) => (
+        <img
+          class="hero-photo"
+          alt=""
+          data-src={img.src}
+          data-srcset={img.srcSet.attribute}
+          data-sizes="100vw"
+          width={img.attributes.width}
+          height={img.attributes.height}
+          decoding="async"
+        />
+      ))
+  }
+  {
+    photo && extra.length > 0 && (
+      <button type="button" class="hero-pause" aria-label="Pause photo slideshow" aria-pressed="false" hidden>
+        <svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <rect x="6" y="5" width="4" height="14" fill="currentColor" />
+          <rect x="14" y="5" width="4" height="14" fill="currentColor" />
+        </svg>
+        <svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path d="M8 5v14l11-7z" fill="currentColor" />
+        </svg>
+      </button>
     )
   }
   <div class="hero-copy">

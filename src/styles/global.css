@@ -191,6 +191,68 @@ p {
   height: 100%;
   object-fit: cover;
   object-position: 30% 40%;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-photo.is-active {
+  opacity: 1;
+}
+
+/* A slow zoom in and out while a photo is showing. Off for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-photo {
+    animation: hero-zoom 20s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+
+  .hero-photo.is-active {
+    animation-play-state: running;
+  }
+
+  .hero.is-paused .hero-photo {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.hero-pause {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--space-5);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--scrim);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.hero-pause:hover {
+  color: var(--color-accent);
+}
+
+.hero-pause .icon-play,
+.hero-pause[aria-pressed='true'] .icon-pause {
+  display: none;
+}
+
+.hero-pause[aria-pressed='true'] .icon-play {
+  display: block;
 }
 
 .hero-copy {

@@ -22,7 +22,13 @@ const description =
 >
   <Header sections={sections} bandName={site.band.name} overlay />
   <main id="main">
-    <Hero bandName={site.band.name} heroPhoto={site.band.heroPhoto} releases={releases} today={today} />
+    <Hero
+      bandName={site.band.name}
+      heroPhoto={site.band.heroPhoto}
+      morePhotos={site.press.photos.map((p) => p.image)}
+      releases={releases}
+      today={today}
+    />
     {sections.includes('shows') && <Shows shows={shows} today={today} />}
     {sections.includes('music') && <Music releases={releases} today={today} />}
     {sections.includes('videos') && <Videos videos={videos} />}
@@ -34,4 +40,5 @@ const description =
 <script>
   // Hides past shows and switches releases on the day, without waiting for a rebuild.
   import '../scripts/live-dates';
+  import '../scripts/hero-slideshow';
 </script>

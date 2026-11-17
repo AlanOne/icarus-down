@@ -100,5 +100,19 @@ describe('home page', () => {
     expect(home.querySelector('img')).toBeNull();
     expect(doc.querySelector('link[rel="icon"]')?.getAttribute('href')).toBe('/icarus-down/favicon.svg');
   });
+
+  it('loads only the first hero photo with the page; the rest wait for the slideshow', () => {
+    const photos = [...doc.querySelectorAll('.hero-photo')];
+    expect(photos.length).toBeGreaterThan(0);
+    expect(photos[0].getAttribute('src')).toMatch(/^\/icarus-down\//);
+    expect(photos[0].classList.contains('is-active')).toBe(true);
+    for (const p of photos.slice(1)) {
+      expect(p.getAttribute('src'), 'later photos must not load with the page').toBeNull();
+      expect(p.getAttribute('srcset')).toBeNull();
+      expect(p.getAttribute('data-src')).toMatch(/^\/icarus-down\//);
+    }
+    // A pause control exists whenever there is more than one photo (WCAG 2.2.2).
+    expect(Boolean(doc.querySelector('.hero button.hero-pause'))).toBe(photos.length > 1);
+  });
 });
 
