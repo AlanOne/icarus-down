@@ -1,0 +1,32 @@
+{
+  "band": {
+    "name": "Icarus Down",
+    "shortBio": "PLACEHOLDER short bio. Icarus Down is a rock band from Slovenia. Replace this with two or three sentences about the band.",
+    "longBio": "PLACEHOLDER long bio for the press page. Replace this with the band's story: where it started, the shows and festivals it has played, the releases, and what the band sounds like now.\n\nA second paragraph can cover the current line-up and what's coming next.",
+    "heroPhoto": "/src/assets/media/zagorje-2026-singer.jpg"
+  },
+  "press": {
+    "photos": [
+      { "image": "/src/assets/media/Zagorje 2026 Stage.JPG", "caption": "Live at MC ZoS Zagorje, November 2026", "credit": "" },
+      { "image": "/src/assets/media/zagorje-2026-singer.jpg", "caption": "Vocals, live at MC ZoS Zagorje, 2026", "credit": "PLACEHOLDER photographer" },
+      { "image": "/src/assets/media/zagorje-2026-singer-silhouette.jpg", "caption": "Live at MC ZoS Zagorje, 2026" },
+      { "image": "/src/assets/media/zagorje-2026-bass-and-drums.jpg", "caption": "Bass and drums, live at MC ZoS Zagorje, 2026" },
+      { "image": "/src/assets/media/zagorje-2026-bass.jpg", "caption": "Bass, live at MC ZoS Zagorje, 2026" },
+      { "image": "/src/assets/media/zagorje-2026-drums.jpg", "caption": "Drums, live at MC ZoS Zagorje, 2026" }
+    ],
+    "fullResKitUrl": "",
+    "techRider": "/files/tech-rider.pdf",
+    "bookingEmail": "booking@example.com",
+    "bookingPhone": ""
+  },
+  "social": {
+    "instagram": "https://www.instagram.com/example-placeholder/",
+    "facebook": "https://www.facebook.com/example-placeholder/",
+    "youtube": "https://www.youtube.com/@example-placeholder",
+    "spotify": "",
+    "bandcamp": "",
+    "tiktok": "",
+    "other": []
+  },
+  "shareImage": "/src/assets/media/share-image.jpg"
+}
