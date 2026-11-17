@@ -243,17 +243,29 @@ content:
           - name: facebook
             label: Facebook
             type: string
+          - name: x
+            label: X (Twitter)
+            type: string
           - name: youtube
             label: YouTube
+            type: string
+          - name: tiktok
+            label: TikTok
             type: string
           - name: spotify
             label: Spotify
             type: string
+          - name: appleMusic
+            label: Apple Music
+            type: string
+          - name: youtubeMusic
+            label: YouTube Music
+            type: string
           - name: bandcamp
             label: Bandcamp
             type: string
-          - name: tiktok
-            label: TikTok
+          - name: soundcloud
+            label: SoundCloud
             type: string
           - name: other
             label: Other

@@ -7,12 +7,32 @@
   },
   "press": {
     "photos": [
-      { "image": "/src/assets/media/Zagorje 2026 Stage.JPG", "caption": "Live at MC ZoS Zagorje, November 2026", "credit": "" },
-      { "image": "/src/assets/media/zagorje-2026-singer.jpg", "caption": "Vocals, live at MC ZoS Zagorje, 2026", "credit": "PLACEHOLDER photographer" },
-      { "image": "/src/assets/media/zagorje-2026-singer-silhouette.jpg", "caption": "Live at MC ZoS Zagorje, 2026" },
-      { "image": "/src/assets/media/zagorje-2026-bass-and-drums.jpg", "caption": "Bass and drums, live at MC ZoS Zagorje, 2026" },
-      { "image": "/src/assets/media/zagorje-2026-bass.jpg", "caption": "Bass, live at MC ZoS Zagorje, 2026" },
-      { "image": "/src/assets/media/zagorje-2026-drums.jpg", "caption": "Drums, live at MC ZoS Zagorje, 2026" }
+      {
+        "image": "/src/assets/media/Zagorje 2026 Stage.JPG",
+        "caption": "Live at MC ZoS Zagorje, November 2026",
+        "credit": ""
+      },
+      {
+        "image": "/src/assets/media/zagorje-2026-singer.jpg",
+        "caption": "Vocals, live at MC ZoS Zagorje, 2026",
+        "credit": "PLACEHOLDER photographer"
+      },
+      {
+        "image": "/src/assets/media/zagorje-2026-singer-silhouette.jpg",
+        "caption": "Live at MC ZoS Zagorje, 2026"
+      },
+      {
+        "image": "/src/assets/media/zagorje-2026-bass-and-drums.jpg",
+        "caption": "Bass and drums, live at MC ZoS Zagorje, 2026"
+      },
+      {
+        "image": "/src/assets/media/zagorje-2026-bass.jpg",
+        "caption": "Bass, live at MC ZoS Zagorje, 2026"
+      },
+      {
+        "image": "/src/assets/media/zagorje-2026-drums.jpg",
+        "caption": "Drums, live at MC ZoS Zagorje, 2026"
+      }
     ],
     "fullResKitUrl": "",
     "techRider": "/files/tech-rider.pdf",
@@ -20,12 +40,16 @@
     "bookingPhone": ""
   },
   "social": {
-    "instagram": "https://www.instagram.com/example-placeholder/",
-    "facebook": "https://www.facebook.com/example-placeholder/",
-    "youtube": "https://www.youtube.com/@example-placeholder",
-    "spotify": "",
-    "bandcamp": "",
+    "instagram": "https://www.instagram.com/icarusdownband",
+    "facebook": "https://www.facebook.com/icarusdown",
+    "x": "https://x.com/downicarusdown",
+    "youtube": "",
     "tiktok": "",
+    "spotify": "https://open.spotify.com/artist/2CMzXovzG1w8FCqdA4nHDK",
+    "appleMusic": "https://music.apple.com/artist/icarus-down/377093146",
+    "youtubeMusic": "https://music.youtube.com/channel/UCzfoJmU-sCNtaBx_LfwlWlg",
+    "bandcamp": "https://icarusdown.bandcamp.com/",
+    "soundcloud": "https://soundcloud.com/icarusdown",
     "other": []
   },
   "shareImage": "/src/assets/media/share-image.jpg"

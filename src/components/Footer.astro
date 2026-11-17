@@ -1,5 +1,16 @@
 ---
-import { siBandcamp, siFacebook, siInstagram, siSpotify, siTiktok, siYoutube } from 'simple-icons';
+import {
+  siApplemusic,
+  siBandcamp,
+  siFacebook,
+  siInstagram,
+  siSoundcloud,
+  siSpotify,
+  siTiktok,
+  siX,
+  siYoutube,
+  siYoutubemusic,
+} from 'simple-icons';
 import type { Site } from '../lib/site-schema';
 
 interface Props {
@@ -8,12 +19,17 @@ interface Props {
 
 const { site } = Astro.props;
 const icons = [
+  // Social first, then where to listen.
   { key: 'instagram', label: 'Instagram', icon: siInstagram },
   { key: 'facebook', label: 'Facebook', icon: siFacebook },
+  { key: 'x', label: 'X', icon: siX },
   { key: 'youtube', label: 'YouTube', icon: siYoutube },
-  { key: 'spotify', label: 'Spotify', icon: siSpotify },
-  { key: 'bandcamp', label: 'Bandcamp', icon: siBandcamp },
   { key: 'tiktok', label: 'TikTok', icon: siTiktok },
+  { key: 'spotify', label: 'Spotify', icon: siSpotify },
+  { key: 'appleMusic', label: 'Apple Music', icon: siApplemusic },
+  { key: 'youtubeMusic', label: 'YouTube Music', icon: siYoutubemusic },
+  { key: 'bandcamp', label: 'Bandcamp', icon: siBandcamp },
+  { key: 'soundcloud', label: 'SoundCloud', icon: siSoundcloud },
 ] as const;
 const social = icons.flatMap((s) => {
   const href = site.social[s.key];

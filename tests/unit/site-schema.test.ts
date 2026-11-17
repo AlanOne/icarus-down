@@ -124,3 +124,23 @@ describe('what Pages CMS might save', () => {
   });
 });
 
+describe('social links', () => {
+  it('accepts X, SoundCloud, Apple Music and YouTube Music links', () => {
+    const site = siteSchema.parse({
+      band: { name: 'X', heroPhoto: '/x.jpg' },
+      press: { bookingEmail: 'booking@example.com' },
+      social: {
+        x: 'https://x.com/downicarusdown',
+        soundcloud: 'https://soundcloud.com/icarusdown',
+        appleMusic: 'https://music.apple.com/artist/377093146',
+        youtubeMusic: 'https://music.youtube.com/channel/UCzfoJmU-sCNtaBx_LfwlWlg',
+      },
+      shareImage: '/x.jpg',
+    });
+    expect(site.social.x).toBe('https://x.com/downicarusdown');
+    expect(site.social.soundcloud).toBe('https://soundcloud.com/icarusdown');
+    expect(site.social.appleMusic).toBe('https://music.apple.com/artist/377093146');
+    expect(site.social.youtubeMusic).toBe('https://music.youtube.com/channel/UCzfoJmU-sCNtaBx_LfwlWlg');
+  });
+});
+
