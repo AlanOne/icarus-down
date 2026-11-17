@@ -98,6 +98,13 @@ describe('what Pages CMS might save', () => {
     expect(site.band.shortBio).toBe('');
   });
 
+  it('reads the featured switch, off when missing', () => {
+    const base = { title: 'T', type: 'ep', date: '2013-06-17', cover: '/c.jpg' };
+    expect(releaseSchema.parse({ ...base, featured: true }).featured).toBe(true);
+    expect(releaseSchema.parse(base).featured).toBe(false);
+    expect(releaseSchema.parse({ ...base, featured: null }).featured).toBe(false);
+  });
+
   it('accepts null release links', () => {
     const r = releaseSchema.parse({ title: 'T', type: 'single', date: '2026-12-12', cover: '/c.jpg', links: null });
     expect(r.links).toEqual({});

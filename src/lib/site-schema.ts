@@ -64,6 +64,7 @@ export const releaseSchema = z.object({
   date: dateString,
   cover: mediaPath,
   presaveUrl: optionalUrl,
+  featured: z.preprocess((v) => v ?? false, z.boolean()),
   links: z.preprocess(
     orEmptyObject,
     z.object({

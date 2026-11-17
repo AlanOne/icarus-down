@@ -74,6 +74,16 @@ describe('applyLiveDates', () => {
     expect(isHidden('[data-hero-candidate][data-release="may"]')).toBe(true);
   });
 
+  it('keeps the release marked featured once nothing is upcoming', () => {
+    const root = render(
+      release('dec', '2026-12-12', 'upcoming', 'data-hero-candidate') +
+        release('ep', '2013-06-17', 'out', 'data-hero-candidate data-featured hidden'),
+    );
+    applyLiveDates(root, at('2026-12-20T10:00:00Z'));
+    expect(isHidden('[data-hero-candidate][data-release="dec"]')).toBe(true);
+    expect(isHidden('[data-hero-candidate][data-release="ep"]')).toBe(false);
+  });
+
   it('features the newest out release once nothing is upcoming', () => {
     const root = render(
       release('dec', '2026-12-12', 'upcoming', 'data-hero-candidate') +

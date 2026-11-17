@@ -15,12 +15,14 @@ const { bandName, heroPhoto, releases, today } = Astro.props;
 const photo = resolveMedia(heroPhoto);
 
 // Every release that could be featured before the next build: all upcoming ones
-// plus the newest that is out. Only the one featured today is visible.
+// plus the out release that comes after them (the one marked featured, else the newest).
+// Only the one featured today is visible.
 const upcoming = releases.filter((r) => releaseStatus(r, today) === 'upcoming');
-const newestOut = releases
+const outs = releases
   .filter((r) => releaseStatus(r, today) === 'out')
-  .sort((a, b) => b.date.localeCompare(a.date))[0];
-const candidates = [...upcoming, ...(newestOut ? [newestOut] : [])].sort((a, b) => a.date.localeCompare(b.date));
+  .sort((a, b) => b.date.localeCompare(a.date));
+const fallback = outs.find((r) => r.featured) ?? outs[0];
+const candidates = [...upcoming, ...(fallback ? [fallback] : [])].sort((a, b) => a.date.localeCompare(b.date));
 const featured = featuredRelease(releases, today);
 ---
 
@@ -44,7 +46,7 @@ const featured = featuredRelease(releases, today);
       candidates.map((r) => {
         const cover = resolveMedia(r.cover);
         return (
-          <div class="hero-release" data-hero-candidate data-release={r.slug} data-release-date={r.date} hidden={r.slug !== featured?.slug}>
+          <div class="hero-release" data-hero-candidate data-featured={r.featured || undefined} data-release={r.slug} data-release-date={r.date} hidden={r.slug !== featured?.slug}>
             {cover && <Image src={cover} width={176} height={176} alt="" class="cover" loading="eager" />}
             <div>
               <p class="release-title">{r.title}</p>

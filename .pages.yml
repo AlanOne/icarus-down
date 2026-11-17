@@ -83,6 +83,10 @@ content:
         required: true
         options:
           media: images
+      - name: featured
+        label: Feature on the home page
+        type: boolean
+        description: Shows this release at the top of the home page. An upcoming release still takes over until it's out. If several are switched on, the newest wins.
       - name: presaveUrl
         label: Pre-save link
         type: string

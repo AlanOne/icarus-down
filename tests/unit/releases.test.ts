@@ -27,6 +27,25 @@ describe('releaseStatus', () => {
 });
 
 describe('featuredRelease', () => {
+  it('features the release marked featured over a newer one', () => {
+    const rs = [release('ep', '2013-06-17', { featured: true }), release('single', '2013-11-29')];
+    expect(featuredRelease(rs, '2026-11-17')?.slug).toBe('ep');
+  });
+
+  it('still features an upcoming release over the one marked featured', () => {
+    const rs = [release('ep', '2013-06-17', { featured: true }), release('next', '2026-12-12')];
+    expect(featuredRelease(rs, '2026-11-17')?.slug).toBe('next');
+  });
+
+  it('features the newest of several marked featured', () => {
+    const rs = [
+      release('old', '2007-12-10', { featured: true }),
+      release('ep', '2013-06-17', { featured: true }),
+      release('single', '2013-11-29'),
+    ];
+    expect(featuredRelease(rs, '2026-11-17')?.slug).toBe('ep');
+  });
+
   it('features the nearest upcoming release over a newer out release', () => {
     const rs = [release('old', '2026-06-01'), release('new', '2026-11-01'), release('next', '2026-12-12')];
     expect(featuredRelease(rs, '2026-11-17')?.slug).toBe('next');

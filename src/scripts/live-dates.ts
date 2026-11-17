@@ -5,7 +5,7 @@ import { isBefore, todayIn } from '../lib/dates';
 import { featuredRelease, releaseStatus, type Release } from '../lib/releases';
 
 /** Just enough of a Release for the date rules. */
-const asRelease = (slug: string, date: string) => ({ slug, date }) as Release;
+const asRelease = (slug: string, date: string, featured = false) => ({ slug, date, featured }) as Release;
 
 export function applyLiveDates(root: ParentNode, now: Date): void {
   const today = todayIn(now);
@@ -37,7 +37,7 @@ export function applyLiveDates(root: ParentNode, now: Date): void {
   const candidates = [...root.querySelectorAll<HTMLElement>('[data-hero-candidate]')];
   if (candidates.length > 0) {
     const pick = featuredRelease(
-      candidates.map((c) => asRelease(c.dataset.release ?? '', c.dataset.releaseDate!)),
+      candidates.map((c) => asRelease(c.dataset.release ?? '', c.dataset.releaseDate!, 'featured' in c.dataset)),
       today,
     );
     for (const c of candidates) c.hidden = c.dataset.release !== pick?.slug;

@@ -7,6 +7,7 @@ const releases = contentEntries('releases').map((r) => ({
   id: r.id as string,
   date: ymd(r.date),
   presaveUrl: (r.presaveUrl as string) || undefined,
+  featured: r.featured === true,
 }));
 const byId = new Map(releases.map((r) => [r.id, r]));
 
@@ -45,7 +46,7 @@ describe('releases', () => {
     const shown = [...doc.querySelectorAll('[data-hero-candidate]')].filter(visible);
     const up = releases.filter((r) => r.date > today).sort((a, b) => a.date.localeCompare(b.date));
     const out = releases.filter((r) => r.date <= today).sort((a, b) => b.date.localeCompare(a.date));
-    const featured = up[0] ?? out[0];
+    const featured = up[0] ?? out.find((r) => r.featured) ?? out[0];
     if (!featured) {
       expect(shown.length).toBe(0); // no releases: the hero is the band photo and name only
       return;
@@ -54,10 +55,11 @@ describe('releases', () => {
     expect(shown[0].getAttribute('data-release')).toBe(featured.id);
   });
 
-  it('offers every upcoming release and the newest out release as hero candidates', () => {
+  it('offers every upcoming release and the featured (else newest) out release as hero candidates', () => {
     const candidates = [...doc.querySelectorAll('[data-hero-candidate]')].map((el) => el.getAttribute('data-release')).sort();
     const up = releases.filter((r) => r.date > today);
-    const newestOut = releases.filter((r) => r.date <= today).sort((a, b) => b.date.localeCompare(a.date))[0];
+    const outs = releases.filter((r) => r.date <= today).sort((a, b) => b.date.localeCompare(a.date));
+    const newestOut = outs.find((r) => r.featured) ?? outs[0];
     expect(candidates).toEqual([...up, ...(newestOut ? [newestOut] : [])].map((r) => r.id).sort());
     for (const c of doc.querySelectorAll('[data-hero-candidate]')) expect(byId.has(c.getAttribute('data-release')!)).toBe(true);
   });

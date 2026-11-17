@@ -16,6 +16,8 @@ export type Release = {
   cover: string;
   presaveUrl?: string;
   links: ReleaseLinks;
+  /** Feature on the home page once it's out (an upcoming release still comes first). */
+  featured?: boolean;
 };
 
 export type ListenLink = { label: string; url: string };
@@ -35,9 +37,14 @@ export function musicOrder(rs: Release[], today: string): Release[] {
   return [...upcoming, ...out];
 }
 
-/** The nearest upcoming release, else the newest one that is out, else null. */
+/**
+ * The release for the home page hero: the nearest upcoming one, else the newest one
+ * marked featured, else the newest one that is out, else null.
+ */
 export function featuredRelease(rs: Release[], today: string): Release | null {
-  return musicOrder(rs, today)[0] ?? null;
+  const ordered = musicOrder(rs, today);
+  const upcoming = ordered.find((r) => releaseStatus(r, today) === 'upcoming');
+  return upcoming ?? ordered.find((r) => r.featured) ?? ordered[0] ?? null;
 }
 
 /**
