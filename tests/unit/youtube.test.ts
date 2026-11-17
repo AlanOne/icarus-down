@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { embedUrl, playableVideos, thumbnailUrl, youtubeId } from '../../src/lib/youtube';
+import { embedUrl, playableVideos, thumbnailUrl, watchUrl, youtubeId } from '../../src/lib/youtube';
 
 describe('youtubeId', () => {
   it.each([
@@ -34,6 +34,10 @@ describe('youtubeId', () => {
 describe('thumbnailUrl and embedUrl', () => {
   it('builds the thumbnail URL', () => {
     expect(thumbnailUrl('dQw4w9WgXcQ')).toBe('https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg');
+  });
+
+  it('builds the plain YouTube watch URL', () => {
+    expect(watchUrl('dQw4w9WgXcQ')).toBe('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   });
 
   it('builds a no-cookie autoplay embed URL', () => {

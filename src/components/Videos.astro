@@ -1,9 +1,10 @@
 ---
 import type { Video } from '../lib/content';
+import { newTab } from '../lib/paths';
 import LiteYouTube from './LiteYouTube.astro';
 
 interface Props {
-  /** Videos whose YouTube ID already parsed; see index.astro. */
+  /** Videos whose YouTube ID already parsed; see page-data.ts. */
   videos: (Video & { youtubeId: string })[];
 }
 
@@ -23,3 +24,15 @@ const { videos } = Astro.props;
     }
   </ul>
 </section>
+
+<dialog class="video-dialog" aria-label="Video">
+  <div class="video-dialog-frame"></div>
+  <div class="video-dialog-bar">
+    <a class="video-dialog-youtube" href="https://www.youtube.com/" {...newTab}>Watch on YouTube</a>
+    <button type="button" class="btn" data-close autofocus>Close</button>
+  </div>
+</dialog>
+
+<script>
+  import '../scripts/video-dialog';
+</script>

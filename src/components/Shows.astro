@@ -1,5 +1,6 @@
 ---
 import { formatShowDate } from '../lib/dates';
+import { newTab } from '../lib/paths';
 import type { Show } from '../lib/shows';
 
 interface Props {
@@ -39,7 +40,7 @@ function dateParts(date: string) {
               {show.note && <p class="note">{show.note}</p>}
             </div>
             {show.ticketUrl && (
-              <a class="tickets" href={show.ticketUrl}>
+              <a class="tickets" href={show.ticketUrl} {...newTab}>
                 Tickets<span class="sr-only"> for {show.venue}, {show.city}</span>
               </a>
             )}

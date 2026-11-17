@@ -87,12 +87,35 @@ describe('links and third parties', () => {
     // Bad or deleted links are dropped at build time, so every button maps to a video
     // in the content, but not every video in the content has to have a button.
     const titles = new Set(contentEntries('videos').map((v) => v.title as string));
-    const buttons = doc.querySelectorAll('#videos button[data-embed]');
+    const buttons = doc.querySelectorAll('#videos a[data-embed]');
     expect(buttons.length).toBeLessThanOrEqual(titles.size);
     for (const b of buttons) {
       expect(titles.has(b.getAttribute('aria-label')!.replace(/^Play video: /, ''))).toBe(true);
       expect(b.getAttribute('aria-label')).toMatch(/^Play video: .+/);
       expect(b.getAttribute('data-embed')).toMatch(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]{11}\?autoplay=1$/);
+      // Without JavaScript (or with ctrl/cmd-click) it is a plain link to the video on YouTube.
+      const id = b.getAttribute('data-embed')!.match(/embed\/([\w-]{11})/)![1];
+      expect(b.getAttribute('href')).toBe(`https://www.youtube.com/watch?v=${id}`);
     }
+  });
+});
+
+describe('external links', () => {
+  for (const file of ['index.html', 'press/index.html']) {
+    it(`opens every link to another site in a new tab (${file})`, () => {
+      const d = page(file);
+      const external = [...d.querySelectorAll('a[href^="http"]')].filter(
+        (a) => !a.getAttribute('href')!.startsWith('https://alanone.github.io/icarus-down/'),
+      );
+      for (const a of external) {
+        expect(a.getAttribute('target'), a.outerHTML).toBe('_blank');
+        expect(a.getAttribute('rel') ?? '', a.outerHTML).toMatch(/noopener/);
+      }
+    });
+  }
+
+  it('has one video pop-up when there are videos', () => {
+    const videos = doc.querySelectorAll('#videos a[data-embed]').length;
+    expect(doc.querySelectorAll('dialog.video-dialog').length).toBe(videos > 0 ? 1 : 0);
   });
 });

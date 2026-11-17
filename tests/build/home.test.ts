@@ -82,7 +82,7 @@ describe('home page', () => {
     }
     // Videos can be dropped at build time (bad or deleted links), so: no section without a video.
     const videos = doc.getElementById('videos');
-    if (videos) expect(videos.querySelectorAll('button[data-embed]').length).toBeGreaterThan(0);
+    if (videos) expect(videos.querySelectorAll('a[data-embed]').length).toBeGreaterThan(0);
     expect(Boolean(doc.querySelector('header [data-nav="videos"]'))).toBe(Boolean(videos));
   });
 

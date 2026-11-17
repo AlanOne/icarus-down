@@ -34,6 +34,10 @@ export function thumbnailUrl(id: string): string {
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 }
 
+export function watchUrl(id: string): string {
+  return `https://www.youtube.com/watch?v=${id}`;
+}
+
 export function embedUrl(id: string): string {
   return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
 }

@@ -27,10 +27,13 @@ export function htmlFiles(dir: string = DIST): string[] {
 
 /** Parse a built page (path relative to dist/) into a DOM document. */
 export function page(rel: string): Document {
-  const html = readFileSync(join(DIST, rel), 'utf8');
+  // Empty out inline script code: happy-dom's parser misreads minified code such as
+  // typeof document<`u` as a tag and swallows the rest of the page. Browsers don't.
+  // The tests check markup, never script code; the <script> tags themselves stay.
+  const html = readFileSync(join(DIST, rel), 'utf8').replace(/(<script\b[^>]*>)[\s\S]*?(<\/script>)/g, '$1$2');
   const window = new Window({ url: 'https://alanone.github.io/icarus-down/' });
-  window.document.write(html);
-  return window.document as unknown as Document;
+  // DOMParser, not document.write: happy-dom's document.write loses everything after a <dialog>.
+  return new window.DOMParser().parseFromString(html, 'text/html') as unknown as Document;
 }
 
 /** Today in Ljubljana, the same rule the build uses. */

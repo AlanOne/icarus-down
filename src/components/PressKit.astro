@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import type { Member } from '../lib/content';
 import { resolveMedia } from '../lib/media';
-import { url } from '../lib/paths';
+import { newTab, url } from '../lib/paths';
 import type { Site } from '../lib/site-schema';
 
 interface Props {
@@ -67,7 +67,7 @@ const photos = press.photos.flatMap((p) => {
       )}
       {press.fullResKitUrl && (
         <p class="full-res">
-          <a class="btn btn-quiet" href={press.fullResKitUrl}>
+          <a class="btn btn-quiet" href={press.fullResKitUrl} {...newTab}>
             Full-resolution press kit
           </a>
         </p>

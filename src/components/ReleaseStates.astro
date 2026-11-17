@@ -2,6 +2,7 @@
 // Both states of a release are always in the HTML. The one that is wrong on build
 // day is hidden; src/scripts/live-dates.ts flips them on release day without a rebuild.
 import { formatReleaseDate } from '../lib/dates';
+import { newTab } from '../lib/paths';
 import { releaseStatus, type Release } from '../lib/releases';
 import ListenButtons from './ListenButtons.astro';
 
@@ -26,7 +27,7 @@ const size = variant === 'hero' ? 'large' : 'small';
   <p class="release-meta">{upcomingText}</p>
   {
     release.presaveUrl && (
-      <a class:list={['btn', { 'btn-quiet': variant === 'card' }]} href={release.presaveUrl}>
+      <a class:list={['btn', { 'btn-quiet': variant === 'card' }]} href={release.presaveUrl} {...newTab}>
         Pre-save<span class="sr-only"> {release.title}</span>
       </a>
     )

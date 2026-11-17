@@ -1,8 +1,10 @@
 ---
-// Click-to-play YouTube: a local thumbnail and a button. Nothing loads from
-// YouTube until the button is pressed, then the no-cookie player replaces it.
+// A video thumbnail that is a plain link to the video on YouTube (new tab). With
+// JavaScript, src/scripts/video-dialog.ts opens it in the pop-up player instead.
+// Nothing loads from YouTube until it is clicked: the thumbnail is downloaded at build time.
 import { Image } from 'astro:assets';
-import { embedUrl, thumbnailUrl } from '../lib/youtube';
+import { newTab } from '../lib/paths';
+import { embedUrl, thumbnailUrl, watchUrl } from '../lib/youtube';
 
 interface Props {
   id: string;
@@ -12,25 +14,10 @@ interface Props {
 const { id, title } = Astro.props;
 ---
 
-<button type="button" class="lite-yt" data-embed={embedUrl(id)} data-title={title} aria-label={`Play video: ${title}`}>
+<a class="lite-yt" href={watchUrl(id)} {...newTab} data-embed={embedUrl(id)} data-title={title} aria-label={`Play video: ${title}`}>
   <Image src={thumbnailUrl(id)} inferSize alt="" widths={[480]} sizes="(min-width: 48rem) 33vw, 100vw" class="lite-yt-thumb" />
   <svg class="lite-yt-play" viewBox="0 0 68 48" width="68" height="48" aria-hidden="true" focusable="false">
-    <rect width="68" height="48" rx="24" fill="currentColor" />
-    <path d="M27 15v18l15-9z" fill="#0a1a33" />
+    <rect width="68" height="48" rx="24" fill="currentColor"></rect>
+    <path d="M27 15v18l15-9z" fill="#0a1a33"></path>
   </svg>
-</button>
-
-<script>
-  for (const button of document.querySelectorAll<HTMLButtonElement>('button[data-embed]')) {
-    button.addEventListener('click', () => {
-      const frame = document.createElement('iframe');
-      frame.src = button.dataset.embed!;
-      frame.title = button.dataset.title ?? 'YouTube video';
-      frame.allow = 'autoplay; encrypted-media; picture-in-picture';
-      frame.allowFullscreen = true;
-      frame.className = 'lite-yt-frame';
-      button.replaceWith(frame);
-      frame.focus();
-    });
-  }
-</script>
+</a>

@@ -11,6 +11,7 @@ import {
   siYoutube,
   siYoutubemusic,
 } from 'simple-icons';
+import { newTab } from '../lib/paths';
 import type { Site } from '../lib/site-schema';
 
 interface Props {
@@ -48,7 +49,7 @@ const year = new Date().getFullYear();
         <ul class="social">
           {social.map((s) => (
             <li>
-              <a href={s.href} data-social={s.key}>
+              <a href={s.href} data-social={s.key} {...newTab}>
                 <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
                   <path d={s.icon.path} fill="currentColor" />
                 </svg>
@@ -58,7 +59,7 @@ const year = new Date().getFullYear();
           ))}
           {site.social.other.map((o) => (
             <li>
-              <a href={o.url} data-social="other">
+              <a href={o.url} data-social="other" {...newTab}>
                 {o.label}
               </a>
             </li>

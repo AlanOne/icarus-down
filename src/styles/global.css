@@ -464,8 +464,7 @@ p {
   list-style: none;
 }
 
-.lite-yt,
-.lite-yt-frame {
+.lite-yt {
   position: relative;
   display: block;
   width: 100%;
@@ -584,3 +583,49 @@ p {
   color: var(--color-accent);
   font-weight: 700;
 }
+
+/* ---- Video pop-up ---- */
+
+.video-dialog {
+  width: min(100% - 2 * var(--gutter), 70rem);
+  max-height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+}
+
+.video-dialog::backdrop {
+  background: rgb(5 13 26 / 0.9);
+}
+
+.video-dialog-frame iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #000;
+}
+
+.video-dialog-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.video-dialog-youtube {
+  color: var(--color-accent);
+  font-weight: 700;
+  padding: var(--space-2) 0;
+}
+
+.video-dialog .btn {
+  border: 0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+

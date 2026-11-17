@@ -9,3 +9,6 @@ export function url(path: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
   return `${base}/${path.replace(/^\/+/, '')}`;
 }
+
+/** Attributes for a link to another site: open it in a new tab, without giving it access to this one. */
+export const newTab = { target: '_blank', rel: 'noopener' } as const;
