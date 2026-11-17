@@ -89,4 +89,16 @@ describe('home page', () => {
   it('always has the band name in the hero', () => {
     expect(doc.querySelector('.hero h1')?.textContent?.trim()).toBe(siteData().band.name);
   });
+
+  it('shows the SVG logo in the header, named for screen readers, and uses the SVG favicon', () => {
+    const home = doc.querySelector('header a.home')!;
+    expect(home.getAttribute('aria-label')).toBe(`${siteData().band.name} home`);
+    const svg = home.querySelector('svg')!;
+    expect(svg).not.toBeNull();
+    expect(svg.getAttribute('aria-hidden')).toBe('true');
+    expect(svg.querySelectorAll('rect').length).toBe(7); // the seven bars
+    expect(home.querySelector('img')).toBeNull();
+    expect(doc.querySelector('link[rel="icon"]')?.getAttribute('href')).toBe('/icarus-down/favicon.svg');
+  });
 });
+

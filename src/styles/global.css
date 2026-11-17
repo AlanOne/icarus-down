@@ -137,9 +137,18 @@ p {
   background: linear-gradient(180deg, var(--scrim) calc(100% - 2rem), transparent 100%);
 }
 
-.site-header .home img {
-  width: 56px;
+.site-header .home {
+  display: block;
+  color: var(--color-text);
+}
+
+.site-header .home svg {
+  width: auto;
   height: 56px;
+}
+
+.site-header .home:hover {
+  color: var(--color-accent);
 }
 
 .site-header ul {
